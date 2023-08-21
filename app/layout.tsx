@@ -8,6 +8,7 @@ import RegisterModal from './components/modals/RegisterModal'
 import LoginModal from './components/modals/LoginModal'
 import ToastProvider from './providers/ToastProvider'
 import getCurrentUser from './actions/getCurrentUser'
+import CarRegisterModal from './components/modals/CarRegisterModal'
 
 const inter = Nunito({ subsets: ['latin'] })
 
@@ -31,6 +32,7 @@ export default async function RootLayout({
         <RegisterModal />
         <LoginModal />
         <ToastProvider />
+        <CarRegisterModal />
         <div className='pt-12 pb-12'>
           {children}
         </div>

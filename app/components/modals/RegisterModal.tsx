@@ -85,6 +85,7 @@ const RegisterModal = () => {
                 </label>
                 {errors.name && errors.name?.type === 'required' && <p className=" text-red-500">{errors.name?.message?.toString()}</p>}
             </div>
+            
             <div className="relative w-full">
                 <input className={`peer w-full p-4 pt-6 font-medium border-2 rounded-md outline-none bg-white transition disabled:opacity-70 disabled:cursor-not-allowed ${errors.password ? 'border-rose-500' : 'border-neutral-400'} ${errors.password ? 'focus:border-rose-500' : 'focus:border-neutral-600'}`}
                 type="password" id="password" disabled={isLoading} placeholder=" " 

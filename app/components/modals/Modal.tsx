@@ -41,9 +41,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, actionLabel, onSubmit, b
     return (
         <>
             <div className={`fixed flex items-center justify-center bg-neutral-500/70  inset-0 z-50 overflow-x-hidden overflow-y-auto focus:outline-none`}>
-                <div className='relative w-full md:w-4/6 lg:3/6 xl:w-2/5 my-6 h-full md:h-auto' >
+                <div className='relative w-full md:w-4/6 lg:3/6 xl:w-2/5 my-6 h-full sm:h-auto '>
                     <div className={`translate duration-300 h-full ${showModal ? 'translate-y-0' : 'translate-y-full'} ${showModal ? 'opacity-100' : 'opacity-0'}`}>
-                        <div className='rounded-lg border-[2px] md:border-blue-600 shadow-lg h-full md:h-auto w-full bg-white flex flex-col gap-3 py-2 px-6 mx-auto outline-none'>
+                        <div className=' rounded-lg border-[2px] md:border-blue-600 shadow-lg h-full sm:h-auto w-full bg-white flex flex-col gap-3 py-2 px-6 mx-auto outline-none'>
                             <div className='flex flex-row items-center justify-center relative border-b-[1px] py-6 border-neutral-500'>
                                 <p className='text-xl font-semibold'>
                                     {title}
