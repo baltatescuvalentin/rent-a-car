@@ -8,10 +8,8 @@ interface AvatarProps {
 
 const Avatar: React.FC<AvatarProps> = ({ src }) => {
 
-
-
     return (
-        <Image className='hidden md:block rounded-full' height={30} width={30} alt="avatar" src={src || `/images/placeholder.jpg`} />
+        <Image className='rounded-full' height={30} width={30} alt="avatar" src={src || `/images/placeholder.jpg`} />
     )
 }
 

@@ -32,7 +32,7 @@ export default async function RootLayout({
         <RegisterModal />
         <LoginModal />
         <ToastProvider />
-        <CarRegisterModal />
+        {/*<CarRegisterModal />*/}
         <div className='pt-12 pb-12'>
           {children}
         </div>

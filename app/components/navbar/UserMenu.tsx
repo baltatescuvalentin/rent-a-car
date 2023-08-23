@@ -8,6 +8,7 @@ import useLoginModal from '@/app/hooks/useLoginModal';
 import useRegisterModal from '@/app/hooks/useRegisterModal';
 import { User } from "@prisma/client";
 import { signOut } from 'next-auth/react';
+import { SafeUserSelected } from '@/app/types';
 
 interface UserMenuProps {
     currentUser?: User | null,
@@ -26,12 +27,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
     return (
         <div className='relative'>
             <div onClick={toggleOpen} 
-                className='rounded-full border-[1px] border-neutral-300 hover:shadow-md flex flex-row items-center p-4 md:py-1 md:px-2 gap-3 cursor-pointer transition'>
-                <AiOutlineMenu size={`1.25rem`}/>
+                className='rounded-full border-[1px] border-neutral-300 hover:shadow-md flex flex-row items-center p-2 md:py-1 md:px-2 gap-3 cursor-pointer transition'>
+                <AiOutlineMenu className="hidden md:block" size={`1.25rem`}/>
                 <Avatar src={null}/>
             </div>
             {isOpen && (
-                <div className='absolute bg-white border-[1px] w-[40vw] md:w-[12vw] rounded-xl flex flex-col right-0 top-18 md:top-11'>
+                <div className='absolute bg-white border-[1px] w-[40vw] md:w-[20vw] lg:w-[12vw] rounded-xl flex flex-col right-0 top-18 md:top-11'>
                     {!currentUser ? (
                         <>
                             <MenuItem label='Login' onClick={() => loginModal.onOpen()} />
