@@ -1,8 +1,10 @@
 'use client';
 
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaCheck } from 'react-icons/fa';
 import { IoIosArrowUp } from 'react-icons/io';
+import qs from 'query-string';
 
 interface FiltersProps {
     types?: string[],
@@ -14,8 +16,19 @@ interface FiltersProps {
 
 const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categories }) => {
 
-    const [openFilters, setOpenFilters] = useState(false);
+    if(typeof window === "undefined") {
+        return (
+            <div>
+                
+            </div>
+        )
+    }
+
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [openFilters, setOpenFilters] = useState(false);
+
+    const router = useRouter();
+    const params = useSearchParams();
 
     const typesObj: any = {};
     const categoriesObj: any = {};
@@ -88,14 +101,78 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
         setMakersState(makersObj);
     }
 
-    const onSubmit = () => {
-        console.log(typesState);
-        console.log(categoriesState);
-        console.log(fuelsState);
-        console.log(makersState);
+    const parseObject = (obj: any) => {
+        let arr: string[] = [];
+        for(const [key, value] of Object.entries(obj)) {
+            if(value === true) {
+                arr.push(key);
+            }
+        }
+
+        return arr;
     }
 
-    onSubmit();
+    const getFiltersData = () => {
+        const typesFromObj = parseObject(typesState);
+        const makersFromObj = parseObject(makersState);
+        const categoriesFromObj = parseObject(categoriesState);
+        const fuelsFromObj = parseObject(fuelsState);
+        console.log(typesFromObj);
+        console.log(makersFromObj);
+        console.log(categoriesFromObj);
+        console.log(fuelsFromObj);
+    
+        return [
+            typesFromObj,
+            makersFromObj,
+            categoriesFromObj,
+            fuelsFromObj,
+        ]
+    }
+
+    const onSubmit = () => {
+
+        const [
+            types,
+            makers,
+            categories,
+            fuels,
+        ] = getFiltersData();
+
+        console.log(makers);
+
+        let currentQuery = {};
+
+        if(params) {
+            currentQuery = qs.parse(params.toString());
+        }
+
+        const updatedQuery = {
+            ...currentQuery,
+            makers,
+            categories,
+            fuels,
+            types,
+        }
+
+        const url = qs.stringifyUrl({
+            url: '/models',
+            query: updatedQuery,
+        }, { skipNull: true });
+
+        /*const queryParams = {
+            types,
+            categories,
+            makers,
+            fuels
+        }
+
+        const url = qs.stringify(queryParams);*/
+        //router.push('/models?'+url);
+
+        router.push(url);
+
+    }
 
     useEffect(() => {
 
@@ -198,7 +275,7 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
                         ))}
                     </div>
                 </fieldset>
-                <button className="w-full bg-blue-700 rounded-md text-lg text-white py-1">
+                <button onClick={onSubmit} className="w-full bg-blue-700 rounded-md text-lg text-white py-1">
                     Apply filters
                 </button>
                 <button onClick={resetFilters} className="w-full bg-blue-700/50 rounded-md text-lg text-white py-1">

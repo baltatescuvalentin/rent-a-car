@@ -11,3 +11,8 @@ export type SafeUser = Omit<
 
 export type SafeUserSelected = Omit<SafeUser, 
     "email" | "emailVerified" | "hashedPassword" | "createdAt" | "updatedAt" >
+
+export type SafeCar = Omit<Car, "color">
+& {
+  color: string;
+};

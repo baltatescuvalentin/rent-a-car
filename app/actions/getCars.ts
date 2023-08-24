@@ -19,37 +19,37 @@ export default async function getCars(params: CarsParams) {
         } = params;
 
         const query: any = {
-            OR: [
+            AND: [
 
             ]
         };
 
         if(models) {
-            query.OR.push(...models.map((model) => ({
+            query.AND.push(...models.map((model) => ({
                 model: model,
             })))
         }
 
         if(makers) {
-            query.OR.push(...makers.map((maker) => ({
+            query.AND.push(...makers.map((maker) => ({
                 maker: maker,
             })))
         }
 
         if(types) {
-            query.OR.push(...types.map((type) => ({
+            query.AND.push(...types.map((type) => ({
                 type: type,
             })))
         }
 
         if(categories) {
-            query.OR.push(...categories.map((category) => ({
+            query.AND.push(...categories.map((category) => ({
                 category: category,
             })))
         }
 
         if(fuels) {
-            query.OR.push(...fuels.map((fuel) => ({
+            query.AND.push(...fuels.map((fuel) => ({
                 fuel: fuel,
             })))
         }
