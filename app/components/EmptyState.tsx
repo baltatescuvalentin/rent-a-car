@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import Heading from "./Heading";
 
 interface EmptyStateProps {
-    title: string,
-    subtitle: string,
+    title?: string,
+    subtitle?: string,
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({ title="No exact matches", subtitle="Try another page or filters" }) => {

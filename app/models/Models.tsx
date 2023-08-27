@@ -1,6 +1,6 @@
 import { toast } from "react-hot-toast";
 import getCars, { CarsParams } from "../actions/getCars";
-//import { SafeCar } from "@/app/types";
+import CarCard from "../components/CarCard";
 
 
 interface ModelsProps {
@@ -41,8 +41,19 @@ const Models: React.FC<ModelsProps> = async ({ searchParams }) => {
     console.log(cars);
 
     return (
-        <div>
-
+        <div className="w-full">
+            <div className="flex flex-row items-center gap-3 justify-between mb-2">
+                <div className="w-full h-[5px] bg-green-400">
+                </div>
+                <div className="text-2xl font-bold text-green-400">
+                    Models
+                </div>
+                <div className="w-full h-[5px] bg-green-400">
+                </div>
+            </div>
+            <div className="flex flex-col lg:flex-row w-full flex-wrap gap-5">
+                {cars.map((car) => <CarCard key={car.id} data={car} />)}
+            </div>
         </div>
     )
 }

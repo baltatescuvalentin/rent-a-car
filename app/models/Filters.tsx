@@ -160,16 +160,6 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
             query: updatedQuery,
         }, { skipNull: true });
 
-        /*const queryParams = {
-            types,
-            categories,
-            makers,
-            fuels
-        }
-
-        const url = qs.stringify(queryParams);*/
-        //router.push('/models?'+url);
-
         router.push(url);
 
     }
@@ -186,7 +176,7 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
     }, []);
 
     useEffect(() => {
-        if(window.innerWidth > 640) {
+        if(window.innerWidth > 768) {
             setOpenFilters(true);
         }
         else {
@@ -199,21 +189,22 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
     }
 
     return (
-        <div className={`w-full sm:w-[275px]`}>
-            <div onClick={handleOpenFilters} className={`sm:hidden flex flex-row justify-between items-center px-4 border-[1px] border-neutral-600 rounded-md ${!openFilters && 'shadow-sm'}`}>
+        <div className={`w-full md:w-[300px]`}>
+            <div onClick={handleOpenFilters} className={`md:hidden flex flex-row justify-between items-center px-4 border-[1px] border-neutral-600 rounded-md ${!openFilters && 'shadow-sm'}`}>
                 <p className="text-2xl font-semibold">
                     {openFilters ? 'Hide' : 'Show'} Filters
                 </p>
                 <IoIosArrowUp className={`transform transition-transform duration-150 ${!openFilters ? 'rotate-180' : 'rotate-0'}`} size={30}/>
             </div>
+            {openFilters &&
             <div className={`flex flex-col gap-3 items-start bg-neutral-100 p-3 rounded-md transition duration-150 ${openFilters ? 'visible opacity-100' : 'invisible opacity-0'}`}>
                 <fieldset id="typefield" className="">
                     <legend className="text-2xl text-neutral-800 font-semibold mb-1">
                         Transmission
                     </legend>
-                    <div className="flex flex-row sm:flex-col flex-wrap gap-2">
+                    <div className="flex flex-row md:flex-col flex-wrap gap-2">
                         {types?.map((type, index) => (
-                            <div key={index} className="flex flex-row items-center gap-2 sm:gap-3 ml-2">
+                            <div key={index} className="flex flex-row items-center gap-2 md:gap-3 ml-2">
                                 <input className="bg-white relative peer scale-[150%] w-4 h-4 checked:border-blue-700 appearance-none hover:cursor-pointer border-[1px] border-neutral-700 focus:ring-2 rounded-sm"  
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFilters(e, 'type')} type="checkbox" name="transmission" id={type} checked={typesState[type]} value={type}/>
                                 <FaCheck size={20} className="absolute hidden peer-checked:block -translate-x-[2px] fill-blue-700 pointer-events-none"/>
@@ -228,9 +219,9 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
                     <legend className="text-2xl text-neutral-800 font-semibold mb-1">
                         Category
                     </legend>
-                    <div className="flex flex-row sm:flex-col flex-wrap gap-2">
+                    <div className="flex flex-row md:flex-col flex-wrap gap-2">
                         {categories?.map((category, index) => (
-                            <div key={index} className="flex flex-row items-center gap-2 sm:gap-3 ml-2">
+                            <div key={index} className="flex flex-row items-center gap-2 md:gap-3 ml-2">
                                 <input className="bg-white relative peer scale-[150%] w-4 h-4 checked:border-blue-700 appearance-none hover:cursor-pointer border-[1px] border-neutral-700 focus:ring-2 rounded-sm"  
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFilters(e, 'category')} type="checkbox" name="transmission" checked={categoriesState[category]} id={category} value={category}/>
                                 <FaCheck size={20} className="absolute hidden peer-checked:block -translate-x-[2px] fill-blue-700 pointer-events-none"/>
@@ -245,9 +236,9 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
                     <legend className="text-2xl text-neutral-800 font-semibold mb-1">
                         Makers
                     </legend>
-                    <div className="flex flex-row sm:flex-col flex-wrap gap-2">
+                    <div className="flex flex-row md:flex-col flex-wrap gap-2">
                         {makers?.map((maker, index) => (
-                            <div key={index} className="flex flex-row items-center gap-2 sm:gap-3 ml-2">
+                            <div key={index} className="flex flex-row items-center gap-2 md:gap-3 ml-2">
                                 <input className="bg-white relative peer scale-[150%] w-4 h-4 checked:border-blue-700 appearance-none hover:cursor-pointer border-[1px] border-neutral-700 focus:ring-2 rounded-sm"  
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFilters(e, 'maker')} type="checkbox" name="transmission" checked={makersState[maker]} id={maker} value={maker}/>
                                 <FaCheck size={20} className="absolute hidden peer-checked:block -translate-x-[2px] fill-blue-700 pointer-events-none"/>
@@ -262,9 +253,9 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
                     <legend className="text-2xl text-neutral-800 font-semibold mb-1">
                         Fuel
                     </legend>
-                    <div className="flex flex-row sm:flex-col flex-wrap gap-2">
+                    <div className="flex flex-row md:flex-col flex-wrap gap-2">
                         {fuels?.map((fuel, index) => (
-                            <div key={index} className="flex flex-row items-center gap-2 sm:gap-3 ml-2">
+                            <div key={index} className="flex flex-row items-center gap-2 md:gap-3 ml-2">
                                 <input className="bg-white relative peer scale-[150%] w-4 h-4 checked:border-blue-700 appearance-none hover:cursor-pointer border-[1px] border-neutral-700 focus:ring-2 rounded-sm"  
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFilters(e, 'fuel')} type="checkbox" name="transmission" checked={fuelsState[fuel]} id={fuel} value={fuel}/>
                                 <FaCheck size={20} className="absolute hidden peer-checked:block -translate-x-[2px] fill-blue-700 pointer-events-none"/>
@@ -282,6 +273,7 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
                     Reset filters
                 </button>
             </div>
+            }
         </div>
     )
 }

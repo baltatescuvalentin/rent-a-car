@@ -16,7 +16,7 @@ const Footer = () => {
                     Find us anywhere!
                 </p>
                 <p className='text-base md:text-xl font-semibold text-white'>
-                    Phone: +40 00 00 00 00
+                    Phone: +40 000 000 000
                 </p>
                 <p className='text-base md:text-xl font-semibold text-white'>
                     Email: reservations@retacar.com

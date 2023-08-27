@@ -1,4 +1,3 @@
-import { useState } from "react";
 import getCarsFeatures from "../actions/getCarsFeatures";
 import Container from "../components/Container";
 import Filters from "./Filters";
@@ -13,21 +12,6 @@ const ModelsPage = async ({
     searchParams: { [key: string]: string | string[] | undefined }
 }) => {
 
-    {/*const [types, setTypes] = useState<string[]>([]);
-    const [makers, setMakers] = useState<string[]>([]);
-    const [fuels, setFuels] = useState<string[]>([]);
-    const [categories, setCategories] = useState<string[]>([]);
-
-    const applyFilters = (types: string[], makers: string[], fuels: string[], categories: string[]) => {
-        setTypes(types);
-        setMakers(makers);
-        setFuels(fuels);
-        setCategories(categories);
-    }
-
-    console.log(makers);
-console.log(categories);*/}
-
     const allCars = await getCarsFeatures();
     const {
         makersArr,
@@ -39,7 +23,7 @@ console.log(categories);*/}
 
     return (
         <Container>
-            <div className="flex flex-col sm:flex-row gap-5 min-h-[50.35vh]">
+            <div className="flex flex-col md:flex-row gap-5 min-h-[50.35vh]">
                 <Filters models={modelsArr} makers={makersArr} fuels={fuelsArr} types={typesArr} categories={categoriesArr} />
                 <Models searchParams={searchParams}/>
             </div>
