@@ -9,16 +9,25 @@ interface ICarPage {
     carId?: string,
 }
 
-const CarPage = async ({
-    params,
-    searchParams,
-}: {
-    params: { slug: string },
-    searchParams: { [key: string]: string | string[] | undefined }
-}) => {
+const CarPage = async ({ params }: { params: ICarPage }) => {
+
+    console.log(params);
+
+    const currCar = await getCarById(params);
+
+    if(!currCar) {
+        return (
+            <EmptyState />
+        )
+    }
 
     return (
-        <ModelClient searchParams={searchParams}/>
+        <Container>
+            <div className="flex flex-col lg:flex-row items-center gap-4">
+                <Carousel images={currCar.imgSrc} />
+                <ExtraOptions data={currCar} />
+            </div>
+        </Container>
     )
 }
 

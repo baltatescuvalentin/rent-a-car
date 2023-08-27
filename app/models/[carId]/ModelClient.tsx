@@ -11,7 +11,7 @@ interface ModelClientProps {
 
 const ModelClient: React.FC<ModelClientProps> = async ({ searchParams }) => {
 
-    console.log(searchParams);
+    /*console.log(searchParams);
     const { carId } = searchParams;
 
     const currCar = await getCarById(carId);
@@ -29,6 +29,9 @@ const ModelClient: React.FC<ModelClientProps> = async ({ searchParams }) => {
                 <ExtraOptions data={currCar} />
             </div>
         </Container>
+    )*/
+    return (
+        <></>
     )
 }
 

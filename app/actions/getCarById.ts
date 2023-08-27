@@ -1,7 +1,7 @@
 import prisma from '@/app/libs/prismadb';
 
 interface IParams {
-    carId: string,
+    carId?: string,
 }
 
 export default async function getCarById(params: IParams) {
