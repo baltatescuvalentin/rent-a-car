@@ -3,13 +3,17 @@
 import Image from "next/image";
 import { useState } from "react";
 import { GrLinkPrevious, GrLinkNext } from 'react-icons/gr';
+import HeartButton from "./HeartButton";
+import { User } from "@prisma/client";
 
 
 interface CarouselProps {
     images: string[],
+    carId: string,
+    currentUser?: User | null,
 }
 
-const Carousel: React.FC<CarouselProps> = ({ images }) => {
+const Carousel: React.FC<CarouselProps> = ({ images, carId, currentUser }) => {
 
     const imgLength = images.length;
 
@@ -28,10 +32,15 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
     }
 
     return (
-        <div className="flex flex-row items-center gap-3">
-            <GrLinkPrevious onClick={prevImage} className="hover:cursor-pointer shadow-sm" size={42} />
-            <Image className="w-[520px] h-[520px]" alt="car" src={images[index]} height={0} width={0}/>
-            <GrLinkNext onClick={nextImage} className="hover:cursor-pointer shadow-sm" size={42} />
+        <div className="relative">
+            <div className="flex flex-row items-center gap-3 relative">
+                <GrLinkPrevious onClick={prevImage} className="hover:cursor-pointer shadow-sm w-[20px] h-[20px] md:w-[42px] md:h-[42px]" />
+                <img className="h-[180px] w-[275px] md:h-[350px] md:w-[550px]" alt={`car-img-${index}`} src={images[index]} />
+                <GrLinkNext onClick={nextImage} className="hover:cursor-pointer shadow-sm w-[20px] h-[20px] md:w-[42px] md:h-[42px]" />
+            </div>
+            <div className="absolute top-3 left-14">
+                <HeartButton currentUser={currentUser} carId={carId} />
+            </div>
         </div>
     )
 }

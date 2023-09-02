@@ -19,7 +19,7 @@ const Footer = () => {
                     Phone: +40 000 000 000
                 </p>
                 <p className='text-base md:text-xl font-semibold text-white'>
-                    Email: reservations@retacar.com
+                    Email: reservations@rentacar.com
                 </p>
                 <div className='flex flex-row items-center justify-center gap-4'>
                     <AiFillLinkedin className="fill-white hover:cursor-pointer" size={32}/>

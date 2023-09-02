@@ -28,3 +28,20 @@ body,
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.rdrMonth {
+  width: 100% !important;
+}
+
+.rdrCalendarWrapper {
+  font-size: 20px !important;
+  font-weight: bold;
+  width: 40% !important;
+}
+
+@media screen and (max-width: 720px) {
+  .rdrCalendarWrapper {
+    font-size: 16px !important;
+    width: 100% !important;
+  }
+}

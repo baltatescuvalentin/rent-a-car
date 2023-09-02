@@ -59,7 +59,6 @@ export default function Home() {
                   </li>
                 </ol>
               </div>
-              <ActionButton label='Rent a car' onClick={() => router.push('/rent')} />
             </div>
 
             <div className='mt-10 lg:mt-8 w-full relative'>

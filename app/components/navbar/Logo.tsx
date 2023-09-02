@@ -19,7 +19,7 @@ const Logo = () => {
                 </div>
             )*/}
             <div onClick={() => router.push('/')} className="relative  cursor-pointer">
-                <Image 
+                <img 
                     alt="logo" src="/images/logo.png" width="200" height="150"/>
                 <div className="absolute font-extrabold italic text-[#343a40] text-2xl -translate-y-10 translate-x-1/3 z-10">
                     Rent-a-car

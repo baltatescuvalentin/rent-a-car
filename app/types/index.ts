@@ -1,4 +1,12 @@
-import { Car, User, Reservation } from '@prisma/client';
+import { Car, User, Reservation, Prisma } from '@prisma/client';
+
+export type SafeReservation = Omit<Reservation,
+  "startDate" | "endDate" | "createdAt"> & {
+    startDate: string,
+    endDate: string,
+    createdAt: string,
+    car: Car,
+  }
 
 export type SafeUser = Omit<
   User,
@@ -9,10 +17,5 @@ export type SafeUser = Omit<
   emailVerified: string | null;
 };
 
-export type SafeUserSelected = Omit<SafeUser, 
+export type SafeUserSelected = Omit<User, 
     "email" | "emailVerified" | "hashedPassword" | "createdAt" | "updatedAt" >
-
-export type SafeCar = Omit<Car, "color">
-& {
-  color: string;
-};

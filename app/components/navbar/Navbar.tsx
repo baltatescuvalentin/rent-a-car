@@ -24,7 +24,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
                             <Logo />
                             <UserMenu currentUser={currentUser}/>
                         </div>
-                        {/** <div className="flex flex-row items-center justify-between">
+                        {/* <div className="flex flex-row items-center justify-between">
                             <NavbarElem label="Home" onClick={() => {}} />
                             <NavbarElem label="Models" onClick={() => {}} />
     </div> */}

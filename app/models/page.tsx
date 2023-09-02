@@ -1,4 +1,5 @@
 import getCarsFeatures from "../actions/getCarsFeatures";
+import getCurrentUser from "../actions/getCurrentUser";
 import Container from "../components/Container";
 import Filters from "./Filters";
 import Models from "./Models";
@@ -13,6 +14,8 @@ const ModelsPage = async ({
 }) => {
 
     const allCars = await getCarsFeatures();
+    const currentUser = await getCurrentUser();
+
     const {
         makersArr,
         modelsArr,
@@ -24,7 +27,7 @@ const ModelsPage = async ({
     return (
         <Container>
             <div className="flex flex-col md:flex-row gap-5 min-h-[50.35vh]">
-                <Filters models={modelsArr} makers={makersArr} fuels={fuelsArr} types={typesArr} categories={categoriesArr} />
+                <Filters models={modelsArr} makers={makersArr} fuels={fuelsArr} types={typesArr} categories={categoriesArr} currentUser={currentUser}/>
                 <Models searchParams={searchParams}/>
             </div>
         </Container>

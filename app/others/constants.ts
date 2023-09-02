@@ -12,5 +12,15 @@ export const CAR_TYPE = [
 ]
 
 export const FUEL_TYPES = [
-    "Diesel", "Gasoline", "Electrical Battery"
+    "Diesel", "Gasoline", "Electrical Battery", "Petrol",
 ]
+
+export const PRICES = {
+    gps: 5,
+    babySeat: 5,
+    childSeat: 5,
+    wifi: 5,
+    snowChains: 3,
+    skiSupport: 10,
+    bikeSupport: 10,
+}

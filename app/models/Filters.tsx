@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { FaCheck } from 'react-icons/fa';
 import { IoIosArrowUp } from 'react-icons/io';
 import qs from 'query-string';
+import useCarRegisterModal from "../hooks/useCarRegisterModal";
+import { User } from "@prisma/client";
 
 interface FiltersProps {
     types?: string[],
@@ -12,20 +14,20 @@ interface FiltersProps {
     makers?: string[],
     fuels?: string[],
     categories?: string[],
+    currentUser?: User | null,
 }
 
-const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categories }) => {
+const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categories, currentUser }) => {
 
-    if(typeof window === "undefined") {
-        return (
-            <div>
-                
-            </div>
-        )
-    }
+    const [windowWidth, setWindowWidth] = useState<number | null>(null);
+    useEffect(() => {
+        if(typeof window !== 'undefined') {
+            setWindowWidth(window.innerWidth)
+        }
+    }, [])
 
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [openFilters, setOpenFilters] = useState(false);
+    const carRegisterModal = useCarRegisterModal();
 
     const router = useRouter();
     const params = useSearchParams();
@@ -35,11 +37,11 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
     const makersObj: any = {};
     const fuelsObj: any = {};
 
-    types?.forEach((type) => typesObj[type] = false);
+    types?.map((type) => typesObj[type] = false);
 
-    categories?.forEach((category) => categoriesObj[category] = false);
+    categories?.map((category) => categoriesObj[category] = false);
 
-    makers?.forEach((maker) => makersObj[maker] = false);
+    makers?.map((maker) => makersObj[maker] = false);
 
     fuels?.map((fuel) => fuelsObj[fuel] = false);
 
@@ -190,90 +192,97 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
 
     return (
         <div className={`w-full md:w-[300px]`}>
-            <div onClick={handleOpenFilters} className={`md:hidden flex flex-row justify-between items-center px-4 border-[1px] border-neutral-600 rounded-md ${!openFilters && 'shadow-sm'}`}>
-                <p className="text-2xl font-semibold">
-                    {openFilters ? 'Hide' : 'Show'} Filters
-                </p>
-                <IoIosArrowUp className={`transform transition-transform duration-150 ${!openFilters ? 'rotate-180' : 'rotate-0'}`} size={30}/>
+            <div>
+                {currentUser?.isAdmin && (
+                    <button onClick={carRegisterModal.onOpen} className="rounded-lg bg-blue-600 text-white font-semibold text-xl w-full px-3 py-2 mb-5">
+                        Add new car!
+                    </button>
+                )}
+                <div onClick={handleOpenFilters} className={`md:hidden flex flex-row justify-between items-center px-4 border-[1px] border-neutral-600 rounded-md ${!openFilters && 'shadow-sm'}`}>
+                    <p className="text-2xl font-semibold">
+                        {openFilters ? 'Hide' : 'Show'} Filters
+                    </p>
+                    <IoIosArrowUp className={`transform transition-transform duration-150 ${!openFilters ? 'rotate-180' : 'rotate-0'}`} size={30}/>
+                </div>
+                {openFilters &&
+                <div className={`flex flex-col gap-3 items-start bg-neutral-100 p-3 rounded-md transition duration-150 ${openFilters ? 'visible opacity-100' : 'invisible opacity-0'}`}>
+                    <fieldset id="typefield" className="">
+                        <legend className="text-2xl text-neutral-800 font-semibold mb-1">
+                            Transmission
+                        </legend>
+                        <div className="flex flex-row md:flex-col flex-wrap gap-2">
+                            {types?.map((type, index) => (
+                                <div key={index} className="flex flex-row items-center gap-2 md:gap-3 ml-2">
+                                    <input className="bg-white relative peer scale-[150%] w-4 h-4 checked:border-blue-700 appearance-none hover:cursor-pointer border-[1px] border-neutral-700 focus:ring-2 rounded-sm"  
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFilters(e, 'type')} type="checkbox" name="transmission" id={type} checked={typesState[type]} value={type}/>
+                                    <FaCheck size={20} className="absolute hidden peer-checked:block -translate-x-[2px] fill-blue-700 pointer-events-none"/>
+                                    <label className="text-xl" htmlFor={type}>
+                                        {type}
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
+                    </fieldset>
+                    <fieldset id="category" className="">
+                        <legend className="text-2xl text-neutral-800 font-semibold mb-1">
+                            Category
+                        </legend>
+                        <div className="flex flex-row md:flex-col flex-wrap gap-2">
+                            {categories?.map((category, index) => (
+                                <div key={index} className="flex flex-row items-center gap-2 md:gap-3 ml-2">
+                                    <input className="bg-white relative peer scale-[150%] w-4 h-4 checked:border-blue-700 appearance-none hover:cursor-pointer border-[1px] border-neutral-700 focus:ring-2 rounded-sm"  
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFilters(e, 'category')} type="checkbox" name="transmission" checked={categoriesState[category]} id={category} value={category}/>
+                                    <FaCheck size={20} className="absolute hidden peer-checked:block -translate-x-[2px] fill-blue-700 pointer-events-none"/>
+                                    <label className="text-xl" htmlFor={category}>
+                                        {category}
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
+                    </fieldset>
+                    <fieldset id="maker" className="">
+                        <legend className="text-2xl text-neutral-800 font-semibold mb-1">
+                            Makers
+                        </legend>
+                        <div className="flex flex-row md:flex-col flex-wrap gap-2">
+                            {makers?.map((maker, index) => (
+                                <div key={index} className="flex flex-row items-center gap-2 md:gap-3 ml-2">
+                                    <input className="bg-white relative peer scale-[150%] w-4 h-4 checked:border-blue-700 appearance-none hover:cursor-pointer border-[1px] border-neutral-700 focus:ring-2 rounded-sm"  
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFilters(e, 'maker')} type="checkbox" name="transmission" checked={makersState[maker]} id={maker} value={maker}/>
+                                    <FaCheck size={20} className="absolute hidden peer-checked:block -translate-x-[2px] fill-blue-700 pointer-events-none"/>
+                                    <label className="text-xl" htmlFor={maker}>
+                                        {maker}
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
+                    </fieldset>
+                    <fieldset id="fuel" className="">
+                        <legend className="text-2xl text-neutral-800 font-semibold mb-1">
+                            Fuel
+                        </legend>
+                        <div className="flex flex-row md:flex-col flex-wrap gap-2">
+                            {fuels?.map((fuel, index) => (
+                                <div key={index} className="flex flex-row items-center gap-2 md:gap-3 ml-2">
+                                    <input className="bg-white relative peer scale-[150%] w-4 h-4 checked:border-blue-700 appearance-none hover:cursor-pointer border-[1px] border-neutral-700 focus:ring-2 rounded-sm"  
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFilters(e, 'fuel')} type="checkbox" name="transmission" checked={fuelsState[fuel]} id={fuel} value={fuel}/>
+                                    <FaCheck size={20} className="absolute hidden peer-checked:block -translate-x-[2px] fill-blue-700 pointer-events-none"/>
+                                    <label className="text-xl" htmlFor={fuel}>
+                                        {fuel}
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
+                    </fieldset>
+                    <button onClick={onSubmit} className="w-full bg-blue-700 rounded-md text-lg text-white py-1">
+                        Apply filters
+                    </button>
+                    <button onClick={resetFilters} className="w-full bg-blue-700/50 rounded-md text-lg text-white py-1">
+                        Reset filters
+                    </button>
+                </div>
+                }
             </div>
-            {openFilters &&
-            <div className={`flex flex-col gap-3 items-start bg-neutral-100 p-3 rounded-md transition duration-150 ${openFilters ? 'visible opacity-100' : 'invisible opacity-0'}`}>
-                <fieldset id="typefield" className="">
-                    <legend className="text-2xl text-neutral-800 font-semibold mb-1">
-                        Transmission
-                    </legend>
-                    <div className="flex flex-row md:flex-col flex-wrap gap-2">
-                        {types?.map((type, index) => (
-                            <div key={index} className="flex flex-row items-center gap-2 md:gap-3 ml-2">
-                                <input className="bg-white relative peer scale-[150%] w-4 h-4 checked:border-blue-700 appearance-none hover:cursor-pointer border-[1px] border-neutral-700 focus:ring-2 rounded-sm"  
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFilters(e, 'type')} type="checkbox" name="transmission" id={type} checked={typesState[type]} value={type}/>
-                                <FaCheck size={20} className="absolute hidden peer-checked:block -translate-x-[2px] fill-blue-700 pointer-events-none"/>
-                                <label className="text-xl" htmlFor={type}>
-                                    {type}
-                                </label>
-                            </div>
-                        ))}
-                    </div>
-                </fieldset>
-                <fieldset id="category" className="">
-                    <legend className="text-2xl text-neutral-800 font-semibold mb-1">
-                        Category
-                    </legend>
-                    <div className="flex flex-row md:flex-col flex-wrap gap-2">
-                        {categories?.map((category, index) => (
-                            <div key={index} className="flex flex-row items-center gap-2 md:gap-3 ml-2">
-                                <input className="bg-white relative peer scale-[150%] w-4 h-4 checked:border-blue-700 appearance-none hover:cursor-pointer border-[1px] border-neutral-700 focus:ring-2 rounded-sm"  
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFilters(e, 'category')} type="checkbox" name="transmission" checked={categoriesState[category]} id={category} value={category}/>
-                                <FaCheck size={20} className="absolute hidden peer-checked:block -translate-x-[2px] fill-blue-700 pointer-events-none"/>
-                                <label className="text-xl" htmlFor={category}>
-                                    {category}
-                                </label>
-                            </div>
-                        ))}
-                    </div>
-                </fieldset>
-                <fieldset id="maker" className="">
-                    <legend className="text-2xl text-neutral-800 font-semibold mb-1">
-                        Makers
-                    </legend>
-                    <div className="flex flex-row md:flex-col flex-wrap gap-2">
-                        {makers?.map((maker, index) => (
-                            <div key={index} className="flex flex-row items-center gap-2 md:gap-3 ml-2">
-                                <input className="bg-white relative peer scale-[150%] w-4 h-4 checked:border-blue-700 appearance-none hover:cursor-pointer border-[1px] border-neutral-700 focus:ring-2 rounded-sm"  
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFilters(e, 'maker')} type="checkbox" name="transmission" checked={makersState[maker]} id={maker} value={maker}/>
-                                <FaCheck size={20} className="absolute hidden peer-checked:block -translate-x-[2px] fill-blue-700 pointer-events-none"/>
-                                <label className="text-xl" htmlFor={maker}>
-                                    {maker}
-                                </label>
-                            </div>
-                        ))}
-                    </div>
-                </fieldset>
-                <fieldset id="fuel" className="">
-                    <legend className="text-2xl text-neutral-800 font-semibold mb-1">
-                        Fuel
-                    </legend>
-                    <div className="flex flex-row md:flex-col flex-wrap gap-2">
-                        {fuels?.map((fuel, index) => (
-                            <div key={index} className="flex flex-row items-center gap-2 md:gap-3 ml-2">
-                                <input className="bg-white relative peer scale-[150%] w-4 h-4 checked:border-blue-700 appearance-none hover:cursor-pointer border-[1px] border-neutral-700 focus:ring-2 rounded-sm"  
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFilters(e, 'fuel')} type="checkbox" name="transmission" checked={fuelsState[fuel]} id={fuel} value={fuel}/>
-                                <FaCheck size={20} className="absolute hidden peer-checked:block -translate-x-[2px] fill-blue-700 pointer-events-none"/>
-                                <label className="text-xl" htmlFor={fuel}>
-                                    {fuel}
-                                </label>
-                            </div>
-                        ))}
-                    </div>
-                </fieldset>
-                <button onClick={onSubmit} className="w-full bg-blue-700 rounded-md text-lg text-white py-1">
-                    Apply filters
-                </button>
-                <button onClick={resetFilters} className="w-full bg-blue-700/50 rounded-md text-lg text-white py-1">
-                    Reset filters
-                </button>
-            </div>
-            }
         </div>
     )
 }

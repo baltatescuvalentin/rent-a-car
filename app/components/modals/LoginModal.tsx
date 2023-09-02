@@ -95,7 +95,7 @@ const LoginModal = () => {
     )
 
     return (
-        <Modal title="Login" isOpen={loginModal.isOpen} onClose={onToggle} actionLabel="Continue" disabled={isLoading} body={bodyContent} footer={footerContent} onSubmit={handleSubmit(onSubmit)}/>
+        <Modal title="Login" isOpen={loginModal.isOpen} onClose={loginModal.onClose} actionLabel="Continue" disabled={isLoading} body={bodyContent} footer={footerContent} onSubmit={handleSubmit(onSubmit)}/>
     )
 }
 

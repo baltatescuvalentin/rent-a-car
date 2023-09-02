@@ -90,7 +90,7 @@ const CarRegisterModal = () => {
         }
         return () => {
             isCancel = true;
-            fileReaders.forEach((fileReader) => {
+            fileReaders.map((fileReader) => {
                 if(fileReader.readyState === 1) {
                     fileReader.abort();
                 }
@@ -177,6 +177,10 @@ const CarRegisterModal = () => {
             })
     }
 
+    if(!carRegisterModal.isOpen) {
+        return null;
+    }
+
     return (
         <div className="inset-0 fixed flex items-center justify-center z-50 bg-neutral-500/70 focus:outline-none">
             <div className="overflow-y-auto w-full h-full relative sm:h-[96vh] md:w-4/6 my-6">
@@ -219,7 +223,7 @@ const CarRegisterModal = () => {
                             <div className="flex flex-col lg:flex-row flex-wrap basis-2/6 justify-center gap-3 mt-4">
                                 {uploadedImages.length > 0 && uploadedImages.map((img, index) => (
                                     <div key={index} className="relative">
-                                        <Image className="rounded-lg w-[200px] h-[200px]" alt="curr img" src={img} width={0} height={0}/>
+                                        <Image className="rounded-lg w-[350px] h-[200px]" alt="curr img" src={img} width={0} height={0}/>
                                         <FaTimesCircle onClick={() => deleteImage(index)} size={24} 
                                             className="absolute z-50 -top-2 -right-2 fill-red-600 hover:cursor-pointer bg-white rounded-full" />
                                     </div>

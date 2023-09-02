@@ -2,29 +2,59 @@ import getCurrentUser from '@/app/actions/getCurrentUser';
 import prisma from '@/app/libs/prismadb';
 import { NextResponse } from 'next/server';
 
-
-interface CarParam {
-    carId?: string,
+export interface ICar {
+    carId: string,
 }
 
-export async function DELETE(request: Request, { param }: {param: CarParam}) {
-    const currentUser = await getCurrentUser();
+export async function DELETE(request: Request, { params }: {params: ICar}) {
 
-    if(!currentUser?.isAdmin) {
-        return NextResponse.error();
-    }
+    const { carId } = params;
 
-    const { carId } = param;
-
-    if(!carId || typeof carId === 'string') {
+    if(!carId) {
         throw new Error('Invalid ID!');
     }
 
-    const car = await prisma.car.delete({
+    const currentUser = await getCurrentUser();
+
+    if(!currentUser || !currentUser?.isAdmin) {
+        return NextResponse.error();
+    }
+
+    const car = await prisma.car.deleteMany({
         where: {
             id: carId,
         }
     });
 
     return NextResponse.json(car);
+}
+
+
+export async function POST(request: Request, {params}: {params: ICar}) {
+
+    const currentUser = await getCurrentUser();
+
+    if(!currentUser || !currentUser?.isAdmin) {
+        return NextResponse.error();
+    }
+
+    const { carId } = params;
+
+    if(!carId) {
+        throw new Error('Invalid ID!');
+    }
+
+    const body = await request.json();
+    const { availableCount } = body;
+    
+    const updatedCar = await prisma.car.update({
+        where: {
+            id: carId,
+        },
+        data: {
+            availableCount: availableCount,
+        }
+    })
+
+    return NextResponse.json(updatedCar);
 }
