@@ -7,7 +7,11 @@ export async function POST(request: Request) {
     const currentUser = await getCurrentUser();
 
     if(!currentUser) {
-        return NextResponse.error();
+        return NextResponse.json({
+            message: "Not allowerd",
+        }, {
+            status: 401,
+        });
     }
 
     const {
@@ -49,5 +53,5 @@ export async function POST(request: Request) {
         }
     })
 
-    return NextResponse.json(reservation);
+    return NextResponse.json(reservation, { status: 201 });
 }

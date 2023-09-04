@@ -178,7 +178,7 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
     }, []);
 
     useEffect(() => {
-        if(window.innerWidth > 768) {
+        if(window.innerWidth > 1024) {
             setOpenFilters(true);
         }
         else {

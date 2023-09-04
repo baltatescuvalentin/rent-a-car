@@ -1,6 +1,6 @@
 'use client';
 
-import { Car } from "@prisma/client";
+import { Car, User } from "@prisma/client";
 import { IoLogoModelS, IoMdColorFill } from 'react-icons/io';
 import { BiSolidCategory, BiSolidColorFill } from 'react-icons/bi';
 import { TbManualGearbox } from 'react-icons/tb';
@@ -10,14 +10,17 @@ import { AiFillCalendar } from 'react-icons/ai';
 import { BsFuelPumpFill } from 'react-icons/bs';
 import CarDetailsInfo from "./CarDetailsInfo";
 import { useRouter } from "next/navigation";
+import useCarEditModal from "../hooks/useCarEditModal";
 
 interface ExtraOptionsProps {
     data: Car,
+    currentUser?: User | null,
 }
 
-const ExtraOptions: React.FC<ExtraOptionsProps> = ({ data }) => {
+const ExtraOptions: React.FC<ExtraOptionsProps> = ({ data, currentUser }) => {
 
     const router = useRouter();
+    const carEditModal = useCarEditModal();
 
     return (
         <div className="lg:ml-16 flex flex-col items-center">
@@ -39,6 +42,11 @@ const ExtraOptions: React.FC<ExtraOptionsProps> = ({ data }) => {
                     Rent
                 </button>
             </div>
+            {currentUser?.isAdmin && (
+                <button onClick={() => carEditModal.onOpen(data)} className="mt-4 text-2xl rounded-xl bg-green-500 text-white font-semibold w-[180px] sm:w-[200px] h-[45px] lg:-translate-x-12">
+                    Edit
+                </button>
+            )}
         </div>
     )
 }

@@ -10,7 +10,11 @@ export async function DELETE(request: Request, { params }: {params: IReservation
     const currentUser = await getCurrentUser();
 
     if(!currentUser) {
-        return NextResponse.error();
+        return NextResponse.json({
+            message: "Not allowerd",
+        }, {
+            status: 401,
+        })
     }
 
     const { reservationId } = params;
@@ -26,5 +30,5 @@ export async function DELETE(request: Request, { params }: {params: IReservation
         }
     })
 
-    return NextResponse.json(reservation);
+    return NextResponse.json(reservation, { status: 201 });
 }

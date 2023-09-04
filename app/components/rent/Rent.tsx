@@ -198,7 +198,7 @@ const Rent: React.FC<RentProps> = ({ images, carId, availableCount, reservations
     return (
         <div className="flex flex-col gap-4">
             <div className="flex flex-col lg:flex-row items-center lg:justify-evenly gap-5 mb-3">
-                <Carousel images={images} />
+                <Carousel carId={carId} images={images} />
                 <Calendar disabledDates={disabledDates} value={dateRange} onChange={handleRange} />
             </div>
             <CarOptions isLoading={isLoading} register={optionsForm.register}/>

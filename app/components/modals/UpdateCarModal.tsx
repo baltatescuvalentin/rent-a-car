@@ -13,12 +13,27 @@ import { CAR_TYPE, CATEGORIES, CLOUDINARY_NAME, CLOUDINARY_PRESET, FUEL_TYPES } 
 import { toast } from "react-hot-toast";
 import Dropdown from "../Dropdown";
 import { useRouter } from "next/navigation";
+import { Car } from "@prisma/client";
+import useCarEditModal from "@/app/hooks/useCarEditModal";
 
-const CarRegisterModal = () => {
+interface CarRegisterModalProps {
+    open?: boolean,
+}
+
+const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
 
     const router = useRouter();
 
-    const carRegisterModal = useCarRegisterModal();
+    const [openModal, setOpenModal] = useState(open);
+
+    const toggleEditModal = () => {
+        setOpenModal(prev => !prev);
+    }
+
+    const carEditModal = useCarEditModal();
+
+    console.log(carEditModal.car);
+
     const [showModal, setShowModal] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [imageFiles, setImageFiles] = useState<HTMLInputElement[]>([]);
@@ -26,7 +41,8 @@ const CarRegisterModal = () => {
     const [uploadedImages, setUploadedImages] = useState<HTMLInputElement[]>([]);
     const imageInputRef = useRef<HTMLInputElement>(null);
     const [imagesError, setImagesError] = useState(false);
-
+    const emptyCar = carEditModal.car?.imgSrc
+ 
     const {
         register,
         formState: {
@@ -37,24 +53,32 @@ const CarRegisterModal = () => {
         setValue,
     } = useForm<FieldValues>({
         defaultValues: {
-            maker: '',
-            model: '',
-            category: '',
-            type: '',
-            horsePower: 0,
-            year: 0,
-            color: '',
-            seatsCount: 0,
-            doorsCount: 0,
-            fuel: '',
+            maker: carEditModal.car?.maker,
+            model: carEditModal.car?.model,
+            category: carEditModal.car?.category,
+            type: carEditModal.car?.type,
+            horsePower: carEditModal.car?.horsePower,
+            year: carEditModal.car?.year,
+            color: carEditModal.car?.color,
+            seatsCount: carEditModal.car?.seatsCount,
+            doorsCount: carEditModal.car?.doorsCount,
+            fuel: carEditModal.car?.fuel,
             availableCount: 0,
-            price: 0,
+            price: carEditModal.car?.price,
         }
     })
 
+    const [carImages, setCarImages] = useState<string[]>([]);
+
     useEffect(() => {
-        setShowModal(carRegisterModal.isOpen);
-    }, [carRegisterModal.isOpen])
+        setCarImages([...(carEditModal.car?.imgSrc || [])]);
+    }, [carEditModal.car?.id]);
+
+    console.log(carImages);
+
+    useEffect(() => {
+        setShowModal(carEditModal.isOpen);
+    }, [carEditModal.isOpen])
 
     const handleChange = (e: any) => {
         const { files } = e.target;
@@ -66,6 +90,10 @@ const CarRegisterModal = () => {
         }
         setImageFiles(validImages);
         return;
+    }
+
+    const capitalize = (str: string) => {
+        return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
     useEffect(() => {
@@ -100,6 +128,17 @@ const CarRegisterModal = () => {
         }
     }, [imageFiles]);
 
+    const deleteCarImages = (index: number) => {
+        let images = [];
+        for(let i = 0; i < carImages.length; i++) {
+            if(i !== index) {
+                images.push(carImages[i]);
+            }
+        }
+        console.log(images);
+        setCarImages(images);
+    }
+
     const deleteImage = (index: number) => {
         let images = [];
         let files = [];
@@ -119,13 +158,9 @@ const CarRegisterModal = () => {
         setUploadedImages(imagesDeleted);
     }, [imagesDeleted]);
 
-    const capitalize = (str: string) => {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    }
-
     const onSubmit: SubmitHandler<FieldValues> = async () => {
 
-        if(uploadedImages.length === 0) {
+        if(uploadedImages.length === 0 && carImages.length === 0) {
             setImagesError(true);
             return;
         }
@@ -134,7 +169,7 @@ const CarRegisterModal = () => {
         }
 
         setIsLoading(true);
-        let secureUrlsFromRes: string[] = [];
+        let secureUrlsFromRes: string[] = carImages;
         if(imageInputRef.current?.files) {
             console.log(imageInputRef.current.files);
             for(let i = 0; i < imageInputRef.current.files.length; i++) {
@@ -151,8 +186,15 @@ const CarRegisterModal = () => {
                     console.error(error);
                 }
             }
+            setUploadedImages([]);
             console.log(secureUrlsFromRes);
         }
+
+        let aCount = 0;
+        if(carEditModal.car?.availableCount) {
+            aCount = carEditModal.car.availableCount;
+        }
+
         const customData = {
             maker: capitalize(getValues('maker')),
             model: capitalize(getValues('model')),
@@ -164,17 +206,16 @@ const CarRegisterModal = () => {
             seatsCount: getValues('seatsCount'),
             doorsCount: getValues('doorsCount'),
             fuel: getValues('fuel'),
-            availableCount: getValues('availableCount'),
+            availableCount: aCount + parseInt(getValues('availableCount')),
             price: getValues('price'),
             imageSrc: secureUrlsFromRes,
         }
         console.log(customData);
 
-        axios.post('/api/car', customData)
+        axios.put(`/api/car/${carEditModal.car?.id}`, customData)
             .then(() => {
-                setUploadedImages([]);
-                toast.success('Added the car!');
-                carRegisterModal.onClose();
+                toast.success('Updated the car!');
+                carEditModal.onClose();
                 router.refresh();
             })
             .catch((error) => {
@@ -185,7 +226,7 @@ const CarRegisterModal = () => {
             })
     }
 
-    if(!carRegisterModal.isOpen) {
+    if(!carEditModal.isOpen) {
         return null;
     }
 
@@ -196,31 +237,34 @@ const CarRegisterModal = () => {
                     <div className="flex flex-col gap-3 px-6 pb-4 mx-auto outline-none rounded-lg border-[2px] md:border-blue-600 shadow-lg h-full sm:h-auto overflow-x-hidden overflow-y-auto bg-white">
                         <div className='flex flex-row items-center justify-center relative border-b-[1px] py-6 border-neutral-500'>
                             <p className='text-xl font-semibold'>
-                                Add a new car
+                                Edit car information
                             </p>
-                            <button onClick={carRegisterModal.onClose} className='absolute hover:opacity-60 left-5'>
+                            <button onClick={() => {
+                                carEditModal.onClose();
+                                setUploadedImages([]);
+                            }} className='absolute hover:opacity-60 left-5'>
                                 <FaTimes size={22} />
                             </button>
                         </div>
                         <p className="text-xl text-red-600">
-                            All fields are required!
+                            Change only the fields you want
                         </p>
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
-                            <Input id="maker" label="Maker" isLoading={isLoading} register={register} errors={errors} type="text"/>
-                            <Input id="model" label="Model" isLoading={isLoading} register={register} errors={errors} type="text"/>
+                            <Input preVal={carEditModal.car?.maker} id="maker" label="Maker" isLoading={isLoading} register={register} errors={errors} type="text"/>
+                            <Input preVal={carEditModal.car?.model} id="model" label="Model" isLoading={isLoading} register={register} errors={errors} type="text"/>
                             {/*<Input id="category" label="Category" isLoading={isLoading} register={register} errors={errors} type="text"/>*/}
-                            <Dropdown id="category" label="Category" setValue={setValue} disabled={isLoading} errors={errors} register={register} categories={CATEGORIES}/>
+                            <Dropdown preVal={carEditModal.car?.category} id="category" label="Category" setValue={setValue} disabled={isLoading} errors={errors} register={register} categories={CATEGORIES}/>
                             {/*<Input id="type" label="Type(automatic/manual)" isLoading={isLoading} register={register} errors={errors} type="text"/>*/}
-                            <Dropdown id="type" label="Type" setValue={setValue} disabled={isLoading} errors={errors} register={register} categories={CAR_TYPE}/>
-                            <Input id="horsePower" label="Horse power" isLoading={isLoading} register={register} errors={errors} type="number"/>
-                            <Input id="year" label="Year" isLoading={isLoading} register={register} errors={errors} type="number"/>
-                            <Input id="color" label="Color" isLoading={isLoading} register={register} errors={errors} type="text"/>
+                            <Dropdown preVal={carEditModal.car?.type} id="type" label="Type" setValue={setValue} disabled={isLoading} errors={errors} register={register} categories={CAR_TYPE}/>
+                            <Input preVal={carEditModal.car?.horsePower} id="horsePower" label="Horse power" isLoading={isLoading} register={register} errors={errors} type="number"/>
+                            <Input preVal={carEditModal.car?.year} id="year" label="Year" isLoading={isLoading} register={register} errors={errors} type="number"/>
+                            <Input preVal={carEditModal.car?.color} id="color" label="Color" isLoading={isLoading} register={register} errors={errors} type="text"/>
                             {/*<Input id="fuel" label="Fuel" isLoading={isLoading} register={register} errors={errors} type="text"/>*/}
-                            <Dropdown id="fuel" label="Fuel" setValue={setValue} disabled={isLoading} errors={errors} register={register} categories={FUEL_TYPES}/>
-                            <Input id="seatsCount" label="Seats" isLoading={isLoading} register={register} errors={errors} type="number"/>
-                            <Input id="doorsCount" label="Doors" isLoading={isLoading} register={register} errors={errors} type="number"/>
-                            <Input id="availableCount" label="How many are available" isLoading={isLoading} register={register} errors={errors} type="number"/>
-                            <Input id="price" label="Price" isLoading={isLoading} register={register} errors={errors} type="number"/>
+                            <Dropdown preVal={carEditModal.car?.fuel} id="fuel" label="Fuel" setValue={setValue} disabled={isLoading} errors={errors} register={register} categories={FUEL_TYPES}/>
+                            <Input preVal={carEditModal.car?.seatsCount} id="seatsCount" label="Seats" isLoading={isLoading} register={register} errors={errors} type="number"/>
+                            <Input preVal={carEditModal.car?.doorsCount} id="doorsCount" label="Doors" isLoading={isLoading} register={register} errors={errors} type="number"/>
+                            <Input preVal={0} id="availableCount" label="How many more cars do you add?" isLoading={isLoading} register={register} errors={errors} type="number" update={true}/>
+                            <Input preVal={carEditModal.car?.price} id="price" label="Price" isLoading={isLoading} register={register} errors={errors} type="number"/>
                         </div>
                         <div className="flex flex-col items-center justify-center mt-4">
                             <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full lg:w-[40vw] h-[20vh] border-2 border-dashed border-neutral-300 hover:border-neutral-400 rounded-lg cursor-pointer bg-neutral-100 hover:bg-neutral-200">
@@ -229,6 +273,13 @@ const CarRegisterModal = () => {
                                 <input type="file" accept="image/*" multiple className="hidden" id="dropzone-file" ref={imageInputRef} onChange={handleChange}/>
                             </label>
                             <div className="flex flex-col lg:flex-row flex-wrap basis-2/6 justify-center gap-3 mt-4">
+                                {carImages.length > 0 && carImages.map((carImg, index) => (
+                                    <div key={index} className="relative">
+                                        <img className="rounded-lg w-[350px] h-[200px]" alt="curr img" src={carImg}/>
+                                        <FaTimesCircle onClick={() => deleteCarImages(index)} size={24} 
+                                            className="absolute z-50 -top-2 -right-2 fill-red-600 hover:cursor-pointer bg-white rounded-full" />
+                                    </div>
+                                ))}
                                 {uploadedImages.length > 0 && uploadedImages.map((img, index) => (
                                     <div key={index} className="relative">
                                         <Image className="rounded-lg w-[350px] h-[200px]" alt="curr img" src={img} width={0} height={0}/>
@@ -239,7 +290,7 @@ const CarRegisterModal = () => {
                                 ))}
                                 { imagesError && (
                                     <p className="text-lg text-center font-semibold text-red-500">
-                                        Upload some images!
+                                        Add more images!
                                     </p>
                                 )}
                             </div>
@@ -254,4 +305,4 @@ const CarRegisterModal = () => {
     )
 }
 
-export default CarRegisterModal;
+export default UpdateCarModal;

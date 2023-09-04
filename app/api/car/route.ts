@@ -9,7 +9,11 @@ export async function POST(request: Request) {
     const isAdmin = currentUser?.isAdmin;
 
     if(!isAdmin) {
-        return NextResponse.error()
+        return NextResponse.json({
+            message: "Not allowerd",
+        }, {
+            status: 401,
+        })
     }
 
     const body = await request.json();
@@ -47,5 +51,5 @@ export async function POST(request: Request) {
         }
     })
 
-    return NextResponse.json(car);
+    return NextResponse.json(car, {status: 201});
 }

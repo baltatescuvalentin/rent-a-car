@@ -61,7 +61,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({ reservation, car }) =
     return (
         <div className="rounded-lg border-[1px] border-blue-500">
             <div className="grid grid-cols-3 md:grid-cols-4 items-center justify-center gap-3 py-2 px-3 ">
-                <div className="flex flex-col sm:flex-row items-center gap-2">
+                <div className="flex flex-col lg:flex-row items-center lg:gap-2">
                     <p className="text-xl font-bold">
                         {car?.maker}
                     </p>

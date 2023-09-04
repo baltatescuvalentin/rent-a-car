@@ -32,7 +32,7 @@ const CarPage = async ({ params }: { params: ICarPage }) => {
                     </p> 
                     <div className="flex flex-col lg:flex-row items-center gap-4 lg:ml-16 md:ml-6">
                         <Carousel carId={params.carId} images={currCar.imgSrc} currentUser={currentUser}/>
-                        <ExtraOptions data={currCar} />
+                        <ExtraOptions data={currCar} currentUser={currentUser}/>
                     </div>
                 </div>
             </Container>

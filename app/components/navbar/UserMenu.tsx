@@ -52,6 +52,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                             ) : (
                                 <MenuItem label='All reservations' onClick={() => {router.push('/dashboard'); toggleOpen();}} />
                             )}
+                            <MenuItem label='All models' onClick={() => {router.push('/models'); toggleOpen();}} />
                             <MenuItem label='Log out' onClick={() => signOut()} />
                         </>
                     )}

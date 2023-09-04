@@ -11,11 +11,16 @@ interface DropdownProps {
     errors: FieldErrors,
     label: string,
     setValue: UseFormSetValue<FieldValues>,
+    preVal?: string,
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ categories, id, disabled, register, errors, label, setValue }) => {
+const Dropdown: React.FC<DropdownProps> = ({ categories, id, disabled, register, errors, label, setValue, preVal }) => {
 
     const selectRef = useRef<HTMLSelectElement>(null);
+
+    if(preVal) {
+        setValue(id, preVal);
+    }
 
     useEffect(() => {
         const updateOptionWidth = () => {
@@ -44,7 +49,7 @@ const Dropdown: React.FC<DropdownProps> = ({ categories, id, disabled, register,
 
     return (
         <div className="flex flex-col">
-            <select {...register(id, { required: `{label} is required`})} id={id} defaultValue={`${label}`} className={`rounded-md border-[2px] pl-3 border-neutral-400 w-auto h-[68px] [&>option]:w-[50px] disabled:opacity-70 disabled:cursor-not-allowed ${errors[id] ? 'border-rose-500' : 'border-neutral-400'} ${errors[id] ? 'focus:border-rose-500' : 'focus:border-neutral-600'}`} ref={selectRef} disabled={disabled} onChange={handleSelect}>
+            <select {...register(id, { required: `${label} is required`})} id={id} defaultValue={`${preVal || label}`} className={`rounded-md border-[2px] pl-3 border-neutral-400 w-auto h-[68px] [&>option]:w-[50px] disabled:opacity-70 disabled:cursor-not-allowed ${errors[id] ? 'border-rose-500' : 'border-neutral-400'} ${errors[id] ? 'focus:border-rose-500' : 'focus:border-neutral-600'}`} ref={selectRef} disabled={disabled} onChange={handleSelect}>
                 <option value={label} disabled>
                     {label}
                 </option>

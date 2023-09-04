@@ -26,7 +26,7 @@ const ModelsPage = async ({
 
     return (
         <Container>
-            <div className="flex flex-col md:flex-row gap-5 min-h-[50.35vh]">
+            <div className="flex flex-col lg:flex-row gap-5 min-h-[50.35vh]">
                 <Filters models={modelsArr} makers={makersArr} fuels={fuelsArr} types={typesArr} categories={categoriesArr} currentUser={currentUser}/>
                 <Models searchParams={searchParams}/>
             </div>
