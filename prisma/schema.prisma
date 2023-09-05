@@ -16,8 +16,8 @@ model User {
   email           String   @unique
   emailVerified   DateTime?
   image           String?
-  hashedPassword  String
-  isAdmin         Boolean
+  hashedPassword  String?
+  isAdmin         Boolean @default(false)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   favoriteIds     String[] @db.ObjectId

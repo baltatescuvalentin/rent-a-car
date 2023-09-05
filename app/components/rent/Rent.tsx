@@ -127,16 +127,52 @@ const Rent: React.FC<RentProps> = ({ images, carId, availableCount, reservations
 
     const onSubmit: SubmitHandler<FieldValues> = async () => {
 
-        if(!currentUser) {
-            loginModal.onOpen();
-            return;
+        try {
+            if(!currentUser) {
+                loginModal.onOpen();
+                return;
+            }
+
+            setIsLoading(true);
+
+            let response1;
+            if(availableCount > 0) {
+                const aCount: number = availableCount - 1;
+                response1 = await  axios.post(`/api/car/${carId}`, {
+                    availableCount: aCount,
+                });
+            }
+
+            let response2 = await axios.post('/api/reservations', {
+                carId: carId,
+                totalPrice: totalPrice,
+                startDate: dateRange.startDate,
+                endDate: dateRange.endDate,
+                fullName: infoForm.getValues('fullName'),
+                email: infoForm.getValues('email'),
+                phoneNumber: infoForm.getValues('phoneNumber'),
+                remarks: infoForm.getValues('remarks'),
+                gps: optionsForm.getValues('gps'),
+                wifi: optionsForm.getValues('wifi'),
+                babySeat: optionsForm.getValues('babySeat'),
+                childSeat: optionsForm.getValues('childSeat'),
+                skiSupport: optionsForm.getValues('skiSupport'),
+                bikeSupport: optionsForm.getValues('bikeSupport'),
+                snowChains: optionsForm.getValues('snowChains'),
+            });
+
+            setDateRange(initialDateRange);
+            router.push('/reservations')
+            toast.success('Reservation made!');
         }
-
-        setIsLoading(true);
-
+        catch(error: any) {
+            toast.error(error);
+        }
+        /*
         if(availableCount > 0) {
+            const aCount: number = availableCount - 1;
             axios.post(`/api/car/${carId}`, {
-                availableCount: availableCount - 1,
+                availableCount: aCount,
             })
             .then(() => {
 
@@ -176,7 +212,7 @@ const Rent: React.FC<RentProps> = ({ images, carId, availableCount, reservations
                 setIsLoading(false);
             });
 
-        /*axios.post('/api/caroptions', {
+        axios.post('/api/caroptions', {
             gps: optionsForm.getValues('gps'),
             wifi: optionsForm.getValues('wifi'),
             babySeat: optionsForm.getValues('babySeat'),

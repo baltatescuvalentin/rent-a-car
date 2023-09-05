@@ -35,7 +35,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                 <Avatar src={null}/>
             </div>
             {isOpen && (
-                <div className='absolute bg-white border-[1px] w-[40vw] z-10 md:w-[20vw] lg:w-[12vw] rounded-xl flex flex-col right-0 top-18 md:top-11'>
+                <div className='absolute bg-white border-[1px] w-[40vw] z-10 md:w-[20vw] lg:w-[15vw] rounded-xl flex flex-col right-0 top-18 md:top-11'>
                     {!currentUser ? (
                         <>
                             <MenuItem label='Login' onClick={() => {loginModal.onOpen(); toggleOpen()}} />

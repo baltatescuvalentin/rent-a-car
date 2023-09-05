@@ -10,6 +10,7 @@ import Button from "../Button";
 import axios from "axios";
 import { toast } from 'react-hot-toast';
 import Heading from "../Heading";
+import { signIn } from "next-auth/react";
 
 const RegisterModal = () => {
 
@@ -114,7 +115,7 @@ const RegisterModal = () => {
 
     let footerContent = (
         <div className="flex flex-col items-center gap-3 mb-2">
-            <Button label="Continue with Google" icon={FcGoogle} outline disabled={isLoading} onClick={() => {}}/>
+            <Button label="Continue with Google" icon={FcGoogle} outline disabled={isLoading} onClick={() => signIn('google')}/>
             <hr />
             <p className="text-lg text-neutral-500">Already have an account?<span className="text-lg text-neutral-700 hover:cursor-pointer" onClick={onToggle}> Log in</span></p>
         </div>

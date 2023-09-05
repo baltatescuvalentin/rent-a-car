@@ -126,7 +126,7 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
                 }
             })
         }
-    }, [imageFiles, uploadedImages]);
+    }, [imageFiles]);
 
     const deleteCarImages = (index: number) => {
         let images = [];

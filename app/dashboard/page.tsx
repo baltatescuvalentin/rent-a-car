@@ -5,6 +5,7 @@ import AdminAddCarButton from "../components/AdminAddCarButton";
 import Container from "../components/Container";
 import EmptyState from "../components/EmptyState";
 import ReservationCard from "../components/reservations/ReservationCard";
+import ReservationCardAdmin from "../components/reservations/ReservationCardAdmin";
 
 interface IDashboardPage {
     reservationId?: string,
@@ -16,7 +17,7 @@ const DashboardPage = async ({ params }: { params: IDashboardPage}) => {
 
     if(!currentUser?.isAdmin || !currentUser) {
         return (
-            <EmptyState title="Not Allowed!" subtitle="Only admins can access this page!"/>
+            <EmptyState title="Not Allowed!" subtitle="Only admins can access this page!" label="Home"/>
         )
     }
 
@@ -36,7 +37,7 @@ const DashboardPage = async ({ params }: { params: IDashboardPage}) => {
                         const currCar = await getCarById({carId: res.carId});
                         if(currCar) {
                             return (
-                                <ReservationCard key={res.id} car={currCar} reservation={res} />
+                                <ReservationCardAdmin key={res.id} car={currCar} reservation={res} />
                             )
                         }
                     })}

@@ -17,7 +17,7 @@ const FavoritesPage = async () => {
     return (
         <Container>
             <div className="min-h-[51vh]">
-                <div className="flex flex-col md:flex-row flex-wrap gap-4 items-center">
+                <div className="flex flex-col md:flex-row flex-wrap gap-4 items-center justify-evenly">
                     {
                         favorites?.map((fav) => <CarCard key={fav.id} data={fav} currentUser={currentUser}/>)
                     }

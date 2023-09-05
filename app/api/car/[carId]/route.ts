@@ -34,7 +34,7 @@ export async function POST(request: Request, {params}: {params: ICar}) {
 
     const currentUser = await getCurrentUser();
 
-    if(!currentUser || !currentUser?.isAdmin) {
+    if(!currentUser) {
         return NextResponse.error();
     }
 

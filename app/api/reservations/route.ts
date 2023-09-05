@@ -3,7 +3,7 @@ import prisma from '@/app/libs/prismadb';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
-    const body = await request.json();
+    
     const currentUser = await getCurrentUser();
 
     if(!currentUser) {
@@ -13,6 +13,8 @@ export async function POST(request: Request) {
             status: 401,
         });
     }
+
+    const body = await request.json();
 
     const {
         carId,
@@ -38,7 +40,7 @@ export async function POST(request: Request) {
             carId,
             startDate,
             endDate,
-            totalPrice,
+            totalPrice: parseInt(totalPrice),
             fullName,
             email,
             phoneNumber,

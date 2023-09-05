@@ -16,7 +16,7 @@ interface InputProps {
 
 const Input: React.FC<InputProps> = ({ label, register, isLoading, errors, id, type, preVal, update=false }) => {
 
-    const emptyPreVal = type === 'text' ? "" : 0
+    const emptyPreVal = type === 'number' ? 0 : "";
     const [inputVal, setInputVal] = useState<string | number>(preVal || emptyPreVal);
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

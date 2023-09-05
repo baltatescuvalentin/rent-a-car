@@ -41,8 +41,8 @@ const LoginModal = () => {
         .then((callback) => {
             setIsLoading(false);
             if(callback?.ok) {
-                toast.success('Logged in!');
                 loginModal.onClose();
+                toast.success('Logged in!');
                 router.refresh();
             }
 
@@ -88,7 +88,7 @@ const LoginModal = () => {
 
     let footerContent = (
         <div className="flex flex-col items-center gap-3 mb-2">
-            <Button label="Continue with Google" icon={FcGoogle} outline disabled={isLoading} onClick={() => {}}/>
+            <Button label="Continue with Google" icon={FcGoogle} outline disabled={isLoading} onClick={() => signIn('google')}/>
             <hr />
             <p className="text-lg text-neutral-500">Don`t have an account?<span className="text-lg text-neutral-700 hover:cursor-pointer" onClick={onToggle}> Sign up</span></p>
         </div>

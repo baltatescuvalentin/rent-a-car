@@ -19,12 +19,12 @@ import { FcWiFiLogo } from "react-icons/fc";
 import ReservationExtra from "./ReservationExtra";
 
 
-interface ReservationCardProps {
+interface ReservationCardAdminProps {
     reservation?: SafeReservation | null,
     car: Car,
 }
 
-const ReservationCard: React.FC<ReservationCardProps> = ({ reservation, car }) => {
+const ReservationCardAdmin: React.FC<ReservationCardAdminProps> = ({ reservation, car }) => {
 
     const [openDetails, setOpenDetails] = useState(false);
     const router = useRouter();
@@ -36,9 +36,26 @@ const ReservationCard: React.FC<ReservationCardProps> = ({ reservation, car }) =
     console.log(car);
     console.log(reservation);
 
-    const deleteReservation = () => {
+    const deleteReservation = async () => {
+        
+        try {
+            const aCount = car.availableCount + 1;
+            let response1 = await axios.post(`/api/car/${car.id}`, {
+                availableCount: aCount,
+            });
 
-        axios.post(`/api/car/${car.id}`, {
+            let response2 = await axios.put(`/api/reservations/${reservation?.id}`, {
+                userId: reservation?.userId,
+            });
+
+            toast.success('Reservation canceled!');
+            router.refresh();
+        }
+        catch(error: any) {
+            toast.error(error);
+        }
+
+        /*axios.post(`/api/car/${car.id}`, {
             availableCount: car.availableCount + 1
         })
             .then(() => {
@@ -55,7 +72,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({ reservation, car }) =
             })
             .catch((error: any) => {
                 toast.error(error);
-            })
+            })*/
     }
 
     return (
@@ -151,4 +168,4 @@ const ReservationCard: React.FC<ReservationCardProps> = ({ reservation, car }) =
     )
 }
 
-export default ReservationCard;
+export default ReservationCardAdmin;
