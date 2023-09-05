@@ -98,7 +98,7 @@ const CarRegisterModal = () => {
                 }
             })
         }
-    }, [imageFiles]);
+    }, [imageFiles, uploadedImages]);
 
     const deleteImage = (index: number) => {
         let images = [];

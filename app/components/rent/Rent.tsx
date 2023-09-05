@@ -121,7 +121,7 @@ const Rent: React.FC<RentProps> = ({ images, carId, availableCount, reservations
 
         setCalculatedValue(currPrice);
         
-    }, [watchedValues, dateRange]);
+    }, [watchedValues, dateRange, price, optionsForm]);
 
     const totalPrice = useMemo(() => calculatedValue, [calculatedValue])
 

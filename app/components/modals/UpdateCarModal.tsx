@@ -72,7 +72,7 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
 
     useEffect(() => {
         setCarImages([...(carEditModal.car?.imgSrc || [])]);
-    }, [carEditModal.car?.id]);
+    }, [carEditModal.car?.id, carEditModal.car?.imgSrc]);
 
     console.log(carImages);
 
@@ -126,7 +126,7 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
                 }
             })
         }
-    }, [imageFiles]);
+    }, [imageFiles, uploadedImages]);
 
     const deleteCarImages = (index: number) => {
         let images = [];
