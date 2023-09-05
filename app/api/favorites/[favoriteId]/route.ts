@@ -16,8 +16,6 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     const { carId } = body;
-    console.log('route');
-    console.log(carId);
 
     if(!carId ) {
         throw new Error('Invalid ID');

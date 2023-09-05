@@ -48,9 +48,6 @@ const Models: React.FC<ModelsProps> = async ({ searchParams }) => {
 
     const cars = Array.from(carsDB);
 
-    console.log('cars from db');
-    console.log(cars);
-
     return (
         <div className="w-full">
             <div className="flex flex-row items-center gap-3 justify-between mb-2">

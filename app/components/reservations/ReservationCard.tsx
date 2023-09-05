@@ -33,9 +33,6 @@ const ReservationCard: React.FC<ReservationCardProps> = ({ reservation, car }) =
         setOpenDetails(prev => !prev);
     }
 
-    console.log(car);
-    console.log(reservation);
-
     const deleteReservation = () => {
 
         axios.post(`/api/car/${car.id}`, {
@@ -45,7 +42,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({ reservation, car }) =
 
             })
             .catch((error: any) => {
-                toast.error(error);
+                toast.error('Error updating the car spec!');
             })
 
         axios.delete(`/api/reservations/${reservation?.id}`)
@@ -54,7 +51,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({ reservation, car }) =
                 router.refresh();
             })
             .catch((error: any) => {
-                toast.error(error);
+                toast.error('Error deleting the reservation!');
             })
     }
 

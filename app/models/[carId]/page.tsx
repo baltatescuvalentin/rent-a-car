@@ -12,8 +12,6 @@ interface ICarPage {
 
 const CarPage = async ({ params }: { params: ICarPage }) => {
 
-    console.log(params);
-
     const currCar = await getCarById(params);
     const currentUser = await getCurrentUser();
 

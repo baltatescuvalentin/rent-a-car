@@ -12,7 +12,6 @@ const FavoritesPage = async () => {
     if(favorites.length === 0) {
         return <EmptyState title="No favorite cars yet" subtitle="Go to our models and find what you like" path="/models"/>
     }
-    console.log(favorites);
 
     return (
         <Container>

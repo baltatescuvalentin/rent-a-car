@@ -68,36 +68,8 @@ const Rent: React.FC<RentProps> = ({ images, carId, availableCount, reservations
         key: 'selection',
     });
 
-    /*const disabledDates = () => {
-        let dates: Date[] = [];
-        if(availableCount === 0) {
-            reservations.forEach((reservation) => {
-                const range = eachDayOfInterval({
-                    start: new Date(reservation.startDate),
-                    end: new Date(reservation.endDate),
-                })
-                console.log(range);
-
-                dates = [...dates, ...range];
-            })
-        }
-
-        return dates;
-    }
-    const disabledDatesArray = disabledDates();
-    console.log('disalbed dates');
-    console.log(disabledDatesArray);*/
-
-    console.log('disalbed dates');
-    console.log(disabledDates);
-
-    console.log(carId);
-    console.log(reservations);
-    console.log(availableCount);
-
     const handleRange = (ranges: any) => {
         setDateRange(ranges.selection);
-        console.log(dateRange);
     }
 
     useEffect(() => {
@@ -166,69 +138,8 @@ const Rent: React.FC<RentProps> = ({ images, carId, availableCount, reservations
             toast.success('Reservation made!');
         }
         catch(error: any) {
-            toast.error(error);
+            toast.error('Error creating the reservation!');
         }
-        /*
-        if(availableCount > 0) {
-            const aCount: number = availableCount - 1;
-            axios.post(`/api/car/${carId}`, {
-                availableCount: aCount,
-            })
-            .then(() => {
-
-            })
-            .catch((error: any) => {
-                toast.error(error);
-            })
-        }
-
-        axios.post('/api/reservations', {
-            carId: carId,
-            totalPrice: totalPrice,
-            startDate: dateRange.startDate,
-            endDate: dateRange.endDate,
-            fullName: infoForm.getValues('fullName'),
-            email: infoForm.getValues('email'),
-            phoneNumber: infoForm.getValues('phoneNumber'),
-            remarks: infoForm.getValues('remarks'),
-            gps: optionsForm.getValues('gps'),
-            wifi: optionsForm.getValues('wifi'),
-            babySeat: optionsForm.getValues('babySeat'),
-            childSeat: optionsForm.getValues('childSeat'),
-            skiSupport: optionsForm.getValues('skiSupport'),
-            bikeSupport: optionsForm.getValues('bikeSupport'),
-            snowChains: optionsForm.getValues('snowChains'),
-        })
-            .then(() => {
-                toast.success('Reservation created!');
-                setDateRange(initialDateRange);
-                // route catre my trips
-                router.push('/reservations');
-            })
-            .catch((error: any) => {
-                toast.error(error);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-
-        axios.post('/api/caroptions', {
-            gps: optionsForm.getValues('gps'),
-            wifi: optionsForm.getValues('wifi'),
-            babySeat: optionsForm.getValues('babySeat'),
-            childSeat: optionsForm.getValues('childSeat'),
-            skiSupport: optionsForm.getValues('skiSupport'),
-            bikeSupport: optionsForm.getValues('bikeSupport'),
-            snowChains: optionsForm.getValues('snowChains'),
-            carId: carId,
-            reservationId: reservationId,
-        })
-            .then(() => {
-                toast.success('Car Options added!');
-            })
-            .catch((error: any) => {
-                toast.error(error);
-            })*/
     }
 
     return (

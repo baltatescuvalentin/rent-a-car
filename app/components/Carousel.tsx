@@ -17,18 +17,14 @@ const Carousel: React.FC<CarouselProps> = ({ images, carId, currentUser }) => {
 
     const imgLength = images.length;
 
-    console.log(images);
-
     const [index, setIndex] = useState(0);
 
     const nextImage = () => {
         setIndex((prev) => (prev + 1 ) % imgLength);
-        console.log(index);
     }
 
     const prevImage = () => {
         setIndex((prev) => (prev - 1 + imgLength) % imgLength);
-        console.log(index);
     }
 
     return (

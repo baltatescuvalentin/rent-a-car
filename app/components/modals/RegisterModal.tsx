@@ -48,7 +48,7 @@ const RegisterModal = () => {
                 loginModal.onOpen();
             })
             .catch((error) => {
-                toast.error(error);
+                toast.error('Error creating account!');
 
             })
             .finally(() => {

@@ -61,7 +61,6 @@ const CarRegisterModal = () => {
         const validImages: HTMLInputElement[] = [];
         for(let i = 0; i < files.length; i++) {
             const file = files[i];
-            console.log(typeof file);
             validImages.push(file);
         }
         setImageFiles(validImages);
@@ -84,7 +83,6 @@ const CarRegisterModal = () => {
 
                     if(images.length === imageFiles.length && !isCancel) {
                         setUploadedImages(images);
-                        console.log(uploadedImages);
                     }
                 }
                 fileReader.readAsDataURL(file);
@@ -109,7 +107,6 @@ const CarRegisterModal = () => {
                 files.push(imageFiles[i]);
             }
         }
-        console.log(images);
         setImagesDeleted(images);
         setImageFiles(files);
         return;
@@ -136,7 +133,6 @@ const CarRegisterModal = () => {
         setIsLoading(true);
         let secureUrlsFromRes: string[] = [];
         if(imageInputRef.current?.files) {
-            console.log(imageInputRef.current.files);
             for(let i = 0; i < imageInputRef.current.files.length; i++) {
                 const file = imageInputRef.current.files[i];
                 const data = new FormData();
@@ -144,14 +140,12 @@ const CarRegisterModal = () => {
                 data.append("upload_preset", CLOUDINARY_PRESET)
                 try {
                     const response = await axios.post(`https://api.cloudinary.com/v1_1/${CLOUDINARY_NAME}/image/upload`, data);
-                    console.log(response)
                     secureUrlsFromRes.push(response.data.secure_url);
                 }
                 catch(error: any) {
                     console.error(error);
                 }
             }
-            console.log(secureUrlsFromRes);
         }
         const customData = {
             maker: capitalize(getValues('maker')),
@@ -168,7 +162,6 @@ const CarRegisterModal = () => {
             price: getValues('price'),
             imageSrc: secureUrlsFromRes,
         }
-        console.log(customData);
 
         axios.post('/api/car', customData)
             .then(() => {
@@ -178,7 +171,7 @@ const CarRegisterModal = () => {
                 router.refresh();
             })
             .catch((error) => {
-                toast.error(error);
+                toast.error('Error registering the car!');
             })
             .finally(() => {
                 setIsLoading(false);

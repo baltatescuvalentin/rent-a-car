@@ -24,18 +24,8 @@ const CarCard: React.FC<CarCardProps> = ({ data, currentUser }) => {
 
     const router = useRouter();
     const params = useSearchParams();
-    console.log(data?.id);
 
     const deleteCar = () => {
-        /*const deleteReservation = () => {
-            axios.delete(`/api/reservations/${reservation?.id}`)
-                .then(() => {
-                    toast.success('Reservation canceled!');
-                })
-                .catch((error: any) => {
-                    toast.error(error);
-                })
-        }*/
 
         axios.delete(`/api/car/${data?.id}`)
             .then(() => {
@@ -43,7 +33,7 @@ const CarCard: React.FC<CarCardProps> = ({ data, currentUser }) => {
                 router.refresh();
             })
             .catch((error: any) => {
-                toast.error(error);
+                toast.error('Couldn`t delete!');
             })
     }
 

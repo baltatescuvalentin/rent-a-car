@@ -32,8 +32,6 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
 
     const carEditModal = useCarEditModal();
 
-    console.log(carEditModal.car);
-
     const [showModal, setShowModal] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [imageFiles, setImageFiles] = useState<HTMLInputElement[]>([]);
@@ -74,8 +72,6 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
         setCarImages([...(carEditModal.car?.imgSrc || [])]);
     }, [carEditModal.car?.id, carEditModal.car?.imgSrc]);
 
-    console.log(carImages);
-
     useEffect(() => {
         setShowModal(carEditModal.isOpen);
     }, [carEditModal.isOpen])
@@ -85,7 +81,6 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
         const validImages: HTMLInputElement[] = [];
         for(let i = 0; i < files.length; i++) {
             const file = files[i];
-            console.log(typeof file);
             validImages.push(file);
         }
         setImageFiles(validImages);
@@ -112,7 +107,6 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
 
                     if(images.length === imageFiles.length && !isCancel) {
                         setUploadedImages(images);
-                        console.log(uploadedImages);
                     }
                 }
                 fileReader.readAsDataURL(file);
@@ -135,7 +129,6 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
                 images.push(carImages[i]);
             }
         }
-        console.log(images);
         setCarImages(images);
     }
 
@@ -148,7 +141,6 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
                 files.push(imageFiles[i]);
             }
         }
-        console.log(images);
         setImagesDeleted(images);
         setImageFiles(files);
         return;
@@ -171,7 +163,6 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
         setIsLoading(true);
         let secureUrlsFromRes: string[] = carImages;
         if(imageInputRef.current?.files) {
-            console.log(imageInputRef.current.files);
             for(let i = 0; i < imageInputRef.current.files.length; i++) {
                 const file = imageInputRef.current.files[i];
                 const data = new FormData();
@@ -179,7 +170,6 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
                 data.append("upload_preset", CLOUDINARY_PRESET)
                 try {
                     const response = await axios.post(`https://api.cloudinary.com/v1_1/${CLOUDINARY_NAME}/image/upload`, data);
-                    console.log(response)
                     secureUrlsFromRes.push(response.data.secure_url);
                 }
                 catch(error: any) {
@@ -187,7 +177,6 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
                 }
             }
             setUploadedImages([]);
-            console.log(secureUrlsFromRes);
         }
 
         let aCount = 0;
@@ -210,7 +199,6 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
             price: getValues('price'),
             imageSrc: secureUrlsFromRes,
         }
-        console.log(customData);
 
         axios.put(`/api/car/${carEditModal.car?.id}`, customData)
             .then(() => {
@@ -219,7 +207,7 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
                 router.refresh();
             })
             .catch((error) => {
-                toast.error(error);
+                toast.error('Error updating the car specs!');
             })
             .finally(() => {
                 setIsLoading(false);

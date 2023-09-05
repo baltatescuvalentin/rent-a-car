@@ -16,10 +16,6 @@ const useFavorite = ({currentUser, carId}: IFavorite) => {
     const router = useRouter();
     const loginModal = useLoginModal();
 
-    console.log('hook');
-    console.log(carId);
-    console.log(currentUser?.favoriteIds);
-
     const hasFavorited = useMemo(() => {
         const favorites = currentUser?.favoriteIds || [];
         if(favorites.includes(carId)) {
@@ -36,10 +32,6 @@ const useFavorite = ({currentUser, carId}: IFavorite) => {
         }
 
         try {
-            //let request;
-
-            console.log('favorited');
-            console.log(hasFavorited);
 
             if(hasFavorited) {
                 axios.post(`/api/favorites/${carId}`, {
@@ -50,7 +42,7 @@ const useFavorite = ({currentUser, carId}: IFavorite) => {
                         toast.success('Car has been deleted from favorites!');
                     })
                     .catch((error: any) => {
-                        toast.error(error);
+                        toast.error('Error trying to delete from favorites!');
                     })
             }
             else {
@@ -62,17 +54,12 @@ const useFavorite = ({currentUser, carId}: IFavorite) => {
                         toast.success('New favorite car added!');
                     })
                     .catch((error: any) => {
-                        toast.error(error);
+                        toast.error('Error trying to add new favorite!');
                     })
             }
-
-            //await request();
-            //router.refresh();
-            //toast.success('Favorite car added!');
-
         }
         catch(error: any) {
-            toast.error(error);
+            toast.error('Error when trying to like/unlike the car!');
         }
 
     }

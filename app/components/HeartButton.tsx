@@ -16,9 +16,6 @@ interface HeartButtonProps {
 
 const HeartButton: React.FC<HeartButtonProps> = ({ carId, currentUser, small }) => {
 
-    console.log('heart');
-    console.log(carId);
-
     const loginModal = useLoginModal();
     const router = useRouter();
 
@@ -29,41 +26,6 @@ const HeartButton: React.FC<HeartButtonProps> = ({ carId, currentUser, small }) 
         currentUser,
         carId,
     });
-
-    /*const hasFavorited = () => {
-        const favorites = currentUser?.favoriteIds;
-        return favorites?.includes(carId);
-    }
-
-    const toggleFavorite = async (e: React.MouseEvent<HTMLDivElement>) => {
-        e.stopPropagation();
-
-        if(!currentUser) {
-            return loginModal.onOpen();
-        }
-
-            const hf = hasFavorited();
-            if(hf) {
-                axios.delete(`/api/favorites/${carId}`)
-                    .then(() => {
-                        router.refresh();
-                        toast.success('Car has been deleted from favorites!');
-                    })
-                    .catch((error: any) => {
-                        toast.error(error);
-                    })
-            }
-            else {
-                axios.post(`/api/favorites/${carId}`)
-                    .then(() => {
-                        router.refresh();
-                        toast.success('New favorite car added!');
-                    })
-                    .catch((error: any) => {
-                        toast.error(error);
-                    })
-            }
-    }*/
 
     return (
         <div onClick={toggleFavorite} className="relative hover:opacity-80 cursor-pointer transition">

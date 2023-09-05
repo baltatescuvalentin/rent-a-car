@@ -33,9 +33,6 @@ const ReservationCardAdmin: React.FC<ReservationCardAdminProps> = ({ reservation
         setOpenDetails(prev => !prev);
     }
 
-    console.log(car);
-    console.log(reservation);
-
     const deleteReservation = async () => {
         
         try {
@@ -52,27 +49,8 @@ const ReservationCardAdmin: React.FC<ReservationCardAdminProps> = ({ reservation
             router.refresh();
         }
         catch(error: any) {
-            toast.error(error);
+            toast.error('Error deleting the reservation!');
         }
-
-        /*axios.post(`/api/car/${car.id}`, {
-            availableCount: car.availableCount + 1
-        })
-            .then(() => {
-
-            })
-            .catch((error: any) => {
-                toast.error(error);
-            })
-
-        axios.delete(`/api/reservations/${reservation?.id}`)
-            .then(() => {
-                toast.success('Reservation canceled!');
-                router.refresh();
-            })
-            .catch((error: any) => {
-                toast.error(error);
-            })*/
     }
 
     return (

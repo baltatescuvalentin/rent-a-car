@@ -77,8 +77,6 @@ export async function PUT(request: Request, {params}: {params: ICar}) {
 
     Object.keys(body).forEach((key) => {
         const value = body[key];
-
-        console.log(`Key: ${key} and Value: ${value}`);
     })
     
     const {

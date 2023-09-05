@@ -24,7 +24,6 @@ const RentPage = async ({ params } : {params: IRentPage}) => {
                     start: new Date(reservation.startDate),
                     end: new Date(reservation.endDate),
                 })
-                console.log(range);
 
                 dates = [...dates, ...range];
             })
@@ -33,10 +32,6 @@ const RentPage = async ({ params } : {params: IRentPage}) => {
         return dates;
     }
     const disabledDatesArray = disabledDates();
-    console.log('disalbed dates');
-    console.log(disabledDatesArray);
-    
-    console.log(currCar);
 
     if(!currCar) {
         return (

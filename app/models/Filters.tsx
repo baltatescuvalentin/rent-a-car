@@ -119,10 +119,6 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
         const makersFromObj = parseObject(makersState);
         const categoriesFromObj = parseObject(categoriesState);
         const fuelsFromObj = parseObject(fuelsState);
-        console.log(typesFromObj);
-        console.log(makersFromObj);
-        console.log(categoriesFromObj);
-        console.log(fuelsFromObj);
     
         return [
             typesFromObj,
@@ -140,8 +136,6 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
             categories,
             fuels,
         ] = getFiltersData();
-
-        console.log(makers);
 
         let currentQuery = {};
 

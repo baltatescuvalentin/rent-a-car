@@ -9,8 +9,6 @@ interface RentClientProps {
 
 const RentClient: React.FC<RentClientProps> = ({ car }) => {
 
-    console.log(car);
-
     return (
         <div>
 
