@@ -33,7 +33,7 @@ const Carousel: React.FC<CarouselProps> = ({ images, carId, currentUser }) => {
                 <button className="outline-none">
                     <GrLinkPrevious onClick={prevImage} className="hover:cursor-pointer shadow-sm w-[20px] h-[20px] md:w-[42px] md:h-[42px]" />
                 </button>
-                <img className="h-[180px] w-[280px] sm:w-[375px] md:h-[350px] md:w-[550px] lg:w-[475px] xl:w-[550px]" alt={`car-img-${index}`} src={images[index]} />
+                <img className="h-[180px] w-[270px] sm:w-[375px] sm:h-[250px] md:h-[350px] md:w-[550px] lg:w-[475px] xl:w-[550px]" alt={`car-img-${index}`} src={images[index]} />
                 <button className="outline-none">
                     <GrLinkNext onClick={nextImage} className="hover:cursor-pointer shadow-sm w-[20px] h-[20px] md:w-[42px] md:h-[42px]" />
                 </button>

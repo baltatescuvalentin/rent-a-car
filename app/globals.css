@@ -33,6 +33,10 @@ body,
   width: 100% !important;
 }
 
+.rdrCalendarCell {
+  padding: 5px;
+}
+
 .rdrCalendarWrapper {
   font-size: 20px !important;
   font-weight: bold;
@@ -43,6 +47,28 @@ body,
   .rdrCalendarWrapper {
     font-size: 16px !important;
     width: 100% !important;
+  }
+
+  .rdrMonthAndYearWrapper {
+    width: 100% !important;
+  }
+
+  .rdrMonth {
+    width: 370px !important;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .rdrMonthAndYearWrapper, .rdrMonth {
+    width: 150% !important;
+    margin-left: -25%;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .rdrMonthAndYearWrapper, .rdrMonth {
+    width: 160% !important;
+    margin-left: -30%;
   }
 }
 

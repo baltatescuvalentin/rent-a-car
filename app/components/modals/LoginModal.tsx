@@ -14,6 +14,7 @@ import Heading from "../Heading";
 
 const LoginModal = () => {
 
+    const [error, setError] = useState<string | null>(null);
     const router = useRouter();
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
@@ -39,16 +40,26 @@ const LoginModal = () => {
             redirect: false,
         })
         .then((callback) => {
-            setIsLoading(false);
             if(callback?.ok) {
+                setIsLoading(false);
                 loginModal.onClose();
-                toast.success('Logged in!');
                 router.refresh();
+                setError(null);
+                //toast.success('Logged in!');
             }
-
-            if(callback?.error) {
-                toast.error(callback.error);
+            else if(callback?.error) {
+                setIsLoading(false);
+                //toast.error(callback.error);
+                setError(callback.error);
             }
+        })
+        .catch((error: any) => {
+            setIsLoading(false);
+            console.error(error);
+            setError(error);
+        })
+        .finally(() => {
+            setIsLoading(false);
         })
 
     }
@@ -61,6 +72,11 @@ const LoginModal = () => {
     let bodyContent = (
         <div className="flex flex-col gap-4 py-2">
             <Heading title="Welcome back!" subtitle="Login to your account."/>
+            {error && (
+                <p className="text-xl font-bold text-red-500">
+                    {error}
+                </p>
+            )}
             <div className="relative w-full">
                 <input className={`peer w-full p-4 pt-6 font-medium border-2 rounded-md outline-none bg-white transition disabled:opacity-70 disabled:cursor-not-allowed ${errors.email ? 'border-rose-500' : 'border-neutral-400'} ${errors.email ? 'focus:border-rose-500' : 'focus:border-neutral-600'}`}
                 type="email" id="email" disabled={isLoading} placeholder=" " 

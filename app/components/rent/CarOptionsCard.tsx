@@ -16,7 +16,7 @@ const CarOptionsCard: React.FC<CarOptionsCardProps> = ({ label, icon: Icon, pric
         <div className="border-[2px] w-full md:w-[400px] border-neutral-400 flex flex-row items-center justify-between px-3 py-1 gap-3">
             <div className="flex flex-row items-center">
                 <Icon className="fill-blue-400" size={56}/>
-                <div className="flex flex-col items-start justify-center py-4 ml-2">
+                <div className="flex flex-col items-start justify-center py-1 sm:py-4 ml-2">
                     <p className="text-2xl text-blue-500">
                         {title}
                     </p>
