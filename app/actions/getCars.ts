@@ -18,40 +18,26 @@ export default async function getCars(params: CarsParams) {
             fuels,
         } = params;
 
-        const query: any = {
-            AND: [
-
-            ]
-        };
+        const query: any = {};
 
         if(models) {
-            query.AND.push(...models.map((model) => ({
-                model: model,
-            })))
+            query.model = {in: models};
         }
 
         if(makers) {
-            query.AND.push(...makers.map((maker) => ({
-                maker: maker,
-            })))
+            query.maker = {in: makers};
         }
 
         if(types) {
-            query.AND.push(...types.map((type) => ({
-                type: type,
-            })))
+            query.type = {in: types};
         }
 
         if(categories) {
-            query.AND.push(...categories.map((category) => ({
-                category: category,
-            })))
+            query.category = {in: categories};
         }
 
         if(fuels) {
-            query.AND.push(...fuels.map((fuel) => ({
-                fuel: fuel,
-            })))
+            query.fuel = {in: fuels};
         }
 
         const cars = await prisma.car.findMany({
