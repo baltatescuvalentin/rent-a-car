@@ -1,46 +1,19 @@
+'use client';
 
 import { toast } from "react-hot-toast";
 import getCars, { CarsParams } from "../actions/getCars";
 import CarCard from "../components/CarCard";
 import getCurrentUser from "../actions/getCurrentUser";
 import EmptyState from "../components/EmptyState";
+import { Car, User } from "@prisma/client";
 
 
 interface ModelsProps {
-    searchParams: { [key: string]: string | string[] | undefined },
+    currentUser: User | null,
+    carsDB: Car[],
 }
 
-const Models: React.FC<ModelsProps> = async ({ searchParams }) => {
-
-    const carsParams: CarsParams = {}
-    const categories: string[] = [], fuels: string[] = [], makers: string[] = [], types: string[] = [];
-
-    const getValuesFromSearchParams = (param: string | undefined | string[], arr: string[]) => {
-        if(typeof param === "undefined") {
-            return;
-        }
-        if(typeof param === 'string') {
-            arr.push(param);
-        }
-        else if(typeof param === 'object') {
-            for(let i = 0; i < param.length; i++) {
-                arr.push(param[i]);
-            }
-        }
-    }
-
-    getValuesFromSearchParams(searchParams['categories'], categories);
-    getValuesFromSearchParams(searchParams['fuels'], fuels);
-    getValuesFromSearchParams(searchParams['makers'], makers);
-    getValuesFromSearchParams(searchParams['types'], types);
-    
-    categories.length > 0 && (carsParams.categories=categories)
-    fuels.length > 0 && (carsParams.fuels=fuels)
-    types.length > 0 && (carsParams.types=types)
-    makers.length > 0 && (carsParams.makers=makers)
-
-    const carsDB = await getCars(carsParams);
-    const currentUser = await getCurrentUser();
+const Models: React.FC<ModelsProps> = async ({ currentUser, carsDB }) => {
 
     if(!carsDB) {
         return <EmptyState />

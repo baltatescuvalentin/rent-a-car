@@ -7,6 +7,8 @@ import { IoIosArrowUp } from 'react-icons/io';
 import qs from 'query-string';
 import useCarRegisterModal from "../hooks/useCarRegisterModal";
 import { User } from "@prisma/client";
+import FiltersInput from "../components/inputs/FiltersInput";
+import { CarsParams } from "../actions/getCars";
 
 interface FiltersProps {
     types?: string[],
@@ -15,9 +17,10 @@ interface FiltersProps {
     fuels?: string[],
     categories?: string[],
     currentUser?: User | null,
+    carsParams: CarsParams,
 }
 
-const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categories, currentUser }) => {
+const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categories, currentUser, carsParams }) => {
 
     const [windowWidth, setWindowWidth] = useState<number | null>(null);
     useEffect(() => {
@@ -32,18 +35,27 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
     const router = useRouter();
     const params = useSearchParams();
 
-    const typesObj: any = {};
-    const categoriesObj: any = {};
-    const makersObj: any = {};
-    const fuelsObj: any = {};
+    let typesObj: any = {};
+    let categoriesObj: any = {};
+    let makersObj: any = {};
+    let fuelsObj: any = {};
 
-    types?.map((type) => typesObj[type] = false);
+    const initialize = (kinds: string[] | undefined, params: string[] | undefined) => {
+        const obj: any = {};
+        if(params) {
+            kinds?.map((type) => params.includes(type) ? obj[type] = true : obj[type] = false);
+        }
+        else {
+            kinds?.map((type) => obj[type] = false);
+        }
 
-    categories?.map((category) => categoriesObj[category] = false);
+        return obj;
+    }
 
-    makers?.map((maker) => makersObj[maker] = false);
-
-    fuels?.map((fuel) => fuelsObj[fuel] = false);
+    typesObj = initialize(types, carsParams.types);
+    categoriesObj = initialize(categories, carsParams.categories);
+    makersObj = initialize(makers, carsParams.makers);
+    fuelsObj = initialize(fuels, carsParams.fuels);
 
     const [typesState, setTypesState] = useState(typesObj);
     const [categoriesState, setCategoriesState] = useState(categoriesObj);
@@ -101,6 +113,7 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
         setCategoriesState(categoriesObj);
         setFuelsState(fuelsObj);
         setMakersState(makersObj);
+        router.push('/models');
     }
 
     const parseObject = (obj: any) => {
@@ -172,6 +185,19 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
     }, []);
 
     useEffect(() => {
+
+        const handleBeforeReload = (event: any) => {
+            router.push('/models');
+        }
+
+        window.addEventListener('beforeunload', handleBeforeReload);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeReload);
+        }
+        
+    }, [])
+
+    useEffect(() => {
         if(window.innerWidth > 1024) {
             setOpenFilters(true);
         }
@@ -200,7 +226,12 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
                 </div>
                 {openFilters &&
                 <div className={`flex flex-col gap-3 items-start bg-neutral-100 p-3 rounded-md transition duration-150 ${openFilters ? 'visible opacity-100' : 'invisible opacity-0'}`}>
-                    <fieldset id="typefield" className="">
+                    <FiltersInput filterValue="type" values={types} update={updateFilters} icon={FaCheck} valueStates={typesState} label="Transmission"/>
+                    <FiltersInput filterValue="category" values={categories} update={updateFilters} icon={FaCheck} valueStates={categoriesState} label="Category" />
+                    <FiltersInput filterValue="maker" values={makers} update={updateFilters} icon={FaCheck} valueStates={makersState} label="Makers"/>
+                    <FiltersInput filterValue="fuel" values={fuels} update={updateFilters} icon={FaCheck} valueStates={fuelsState} label="Fuel" /> 
+                    
+                    {/*<fieldset id="typefield" className="">
                         <legend className="text-2xl text-neutral-800 font-semibold mb-1">
                             Transmission
                         </legend>
@@ -267,7 +298,7 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
                                 </div>
                             ))}
                         </div>
-                    </fieldset>
+                            </fieldset>*/}
                     <button onClick={onSubmit} className="w-full bg-blue-700 rounded-md text-lg text-white py-1">
                         Apply filters
                     </button>

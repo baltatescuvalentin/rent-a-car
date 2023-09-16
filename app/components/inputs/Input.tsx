@@ -1,5 +1,6 @@
 'use client';
 
+import { FormRegister } from "@/app/types";
 import { useState } from "react";
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 
@@ -12,9 +13,10 @@ interface InputProps {
     type: string,
     preVal?: string | number,
     update?: boolean,
+    requiredObject?: FormRegister,
 }
 
-const Input: React.FC<InputProps> = ({ label, register, isLoading, errors, id, type, preVal, update=false }) => {
+const Input: React.FC<InputProps> = ({ label, register, isLoading, errors, id, type, preVal, update=false, requiredObject }) => {
 
     const emptyPreVal = type === 'number' ? 0 : "";
     const [inputVal, setInputVal] = useState<string | number>(preVal || emptyPreVal);
@@ -25,16 +27,34 @@ const Input: React.FC<InputProps> = ({ label, register, isLoading, errors, id, t
 
     const minVal = update ? 0 : 1
 
-    let formObject = {};
+    let formObject: any = {};
     if(type === "number") {
         formObject = {
             min: minVal,
         }
     }
     else {
-        formObject = {
-            required: `${label} is required`
+        if(requiredObject?.requiredMsg) {
+            formObject.required = requiredObject.requiredMsg;
         }
+        if(requiredObject?.pattern) {
+            formObject.pattern = {
+                value: requiredObject.pattern.value,
+                message: requiredObject.pattern.message,
+            }
+        }
+        if(requiredObject?.minLength) {
+            formObject.minLength = {
+                value: requiredObject.minLength.value,
+                message: requiredObject.minLength.message,
+            }
+        }
+        if(requiredObject?.validate) {
+            formObject.validate = requiredObject.validate;
+        }
+        /*formObject = {
+            required: `${label} is required`
+        }*/
     }
 
     return (
@@ -47,8 +67,8 @@ const Input: React.FC<InputProps> = ({ label, register, isLoading, errors, id, t
             <label id={id} className={`absolute duration-150 transform z-10 left-4 top-5 origin-[0] -translate-y-3 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 ${errors[id] ? 'text-rose-500' : 'text-zinc-400'}`}>
                 {label}
             </label>
-            {errors[id] && errors[id]?.type === 'required' && <p className=" text-red-500">{errors[id]?.message?.toString()}</p>}
-            {errors[id] && errors[id]?.type === 'min' && <p className=" text-red-500">{label + ' is required'}</p>}
+            {errors[id] && <p className=" text-red-500">{errors[id]?.message?.toString()}</p>}
+            
         </div>
     )
 }

@@ -11,6 +11,8 @@ import axios from "axios";
 import { toast } from 'react-hot-toast';
 import Heading from "../Heading";
 import { signIn } from "next-auth/react";
+import { FormRegister } from "@/app/types";
+import Input from "../inputs/Input";
 
 const RegisterModal = () => {
 
@@ -21,6 +23,7 @@ const RegisterModal = () => {
         register,
         handleSubmit,
         getValues,
+        reset,
         formState: {
             errors,
         }
@@ -58,13 +61,46 @@ const RegisterModal = () => {
 
     const onToggle = useCallback(() => {
         registerModal.onClose();
+        reset();
         loginModal.onOpen();
-    }, [loginModal, registerModal])
+    }, [loginModal, registerModal]);
+
+    let emailForm: FormRegister = {
+        requiredMsg: 'Email is required',
+        pattern: {
+            value: /\S+@\S+\.\S+/,
+            message: "Entered value does not match email format",
+        }
+    };
+
+    let nameForm: FormRegister = {
+        requiredMsg: 'Name is required',
+    };
+
+    let passwordForm: FormRegister = {
+        requiredMsg: 'Password is required',
+        minLength: {
+            message: 'Password should be atleast 8 characters',
+            value: 8,
+        }
+    };
+
+    let confirmForm: FormRegister = {
+        requiredMsg: 'Confirm password is required',
+        validate: (val: string) => {
+            const password = getValues('password');
+            return password == val || 'Passwords do not match, try again!'
+        }
+    }
 
     let bodyContent = (
         <div className="flex flex-col gap-4 py-2">
             <Heading title="Welcome to Rent-a-car" subtitle="Create your own account." />
-            <div className="relative w-full">
+            <Input label="Email" id="email" type="email" isLoading={isLoading} register={register} errors={errors} requiredObject={emailForm} />
+            <Input label="Name" id="name" type="text" isLoading={isLoading} register={register} errors={errors} requiredObject={nameForm} />
+            <Input label="Password" id="password" type="password" isLoading={isLoading} register={register} errors={errors} requiredObject={passwordForm} />
+            <Input label="Confirm Passowrd" id="confirmPassowrd" type="password" isLoading={isLoading} register={register} errors={errors} requiredObject={confirmForm} />
+            {/*<div className="relative w-full">
                 <input className={`peer w-full p-4 pt-6 font-medium border-2 rounded-md outline-none bg-white transition disabled:opacity-70 disabled:cursor-not-allowed ${errors.email ? 'border-rose-500' : 'border-neutral-400'} ${errors.email ? 'focus:border-rose-500' : 'focus:border-neutral-600'}`}
                 type="email" id="email" disabled={isLoading} placeholder=" " 
                 {...register('email', { required: 'Email is required', pattern: {
@@ -109,7 +145,7 @@ const RegisterModal = () => {
                 </label>
                 {errors.confirmPassword && errors.confirmPassword?.type === 'required' && <p className="text-red-500">{errors.confirmPassword?.message?.toString()}</p>}
                 {errors.confirmPassword && errors.confirmPassword?.type === 'validate' && <p className="text-red-500">{errors.confirmPassword?.message?.toString()}</p>}
-            </div>
+            </div>*/}
         </div>
     )
 
@@ -122,7 +158,16 @@ const RegisterModal = () => {
     )
 
     return (
-        <Modal title="Register" isOpen={registerModal.isOpen} onClose={registerModal.onClose} actionLabel="Continue" disabled={isLoading} body={bodyContent} onSubmit={handleSubmit(onSubmit)} footer={footerContent}/>
+        <Modal title="Register" 
+            isOpen={registerModal.isOpen} 
+            onClose={registerModal.onClose} 
+            actionLabel="Continue" 
+            disabled={isLoading} 
+            body={bodyContent} 
+            onSubmit={handleSubmit(onSubmit)} 
+            footer={footerContent} 
+            modalType="register"
+            reset={reset}/>
     )
 }
 

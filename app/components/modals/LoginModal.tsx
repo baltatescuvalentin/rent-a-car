@@ -11,6 +11,8 @@ import { signIn } from "next-auth/react";
 import { toast } from "react-hot-toast/headless";
 import { useRouter } from "next/navigation";
 import Heading from "../Heading";
+import { FormRegister } from "@/app/types";
+import Input from "../inputs/Input";
 
 const LoginModal = () => {
 
@@ -23,6 +25,7 @@ const LoginModal = () => {
         register,
         handleSubmit,
         getValues,
+        reset,
         formState: {
             errors,
         }
@@ -42,6 +45,7 @@ const LoginModal = () => {
         .then((callback) => {
             if(callback?.ok) {
                 setIsLoading(false);
+                reset();
                 loginModal.onClose();
                 router.refresh();
                 setError(null);
@@ -66,8 +70,21 @@ const LoginModal = () => {
 
     const onToggle = useCallback(() => {
         loginModal.onClose();
+        reset();
         registerModal.onOpen();
-    }, [loginModal, registerModal])
+    }, [loginModal, registerModal]);
+
+    let emailForm: FormRegister = {
+        requiredMsg: 'Email is required',
+        pattern: {
+            value: /\S+@\S+\.\S+/,
+            message: "Entered value does not match email format"
+        }
+    };
+
+    let passwordForm: FormRegister = {
+        requiredMsg: 'Password is required',
+    };
 
     let bodyContent = (
         <div className="flex flex-col gap-4 py-2">
@@ -77,7 +94,10 @@ const LoginModal = () => {
                     {error}
                 </p>
             )}
-            <div className="relative w-full">
+            <Input preVal={getValues('email')} label="Email" id="email" type="email" register={register} errors={errors} isLoading={isLoading} requiredObject={emailForm}/>
+            <Input preVal={getValues('password')} label="Password" id="password" type="password" register={register} errors={errors} isLoading={isLoading} requiredObject={passwordForm} />
+            
+            {/*<div className="relative w-full">
                 <input className={`peer w-full p-4 pt-6 font-medium border-2 rounded-md outline-none bg-white transition disabled:opacity-70 disabled:cursor-not-allowed ${errors.email ? 'border-rose-500' : 'border-neutral-400'} ${errors.email ? 'focus:border-rose-500' : 'focus:border-neutral-600'}`}
                 type="email" id="email" disabled={isLoading} placeholder=" " 
                 {...register('email', { required: 'Email is required', pattern: {
@@ -98,7 +118,7 @@ const LoginModal = () => {
                     Password
                 </label>
                 {errors.password && errors.password?.type === 'required' && <p className="text-red-500">{errors.password?.message?.toString()}</p>}
-            </div>
+            </div>*/}
         </div>
     )
 
@@ -111,7 +131,16 @@ const LoginModal = () => {
     )
 
     return (
-        <Modal title="Login" isOpen={loginModal.isOpen} onClose={loginModal.onClose} actionLabel="Continue" disabled={isLoading} body={bodyContent} footer={footerContent} onSubmit={handleSubmit(onSubmit)}/>
+        <Modal title="Login" 
+            isOpen={loginModal.isOpen} 
+            onClose={loginModal.onClose} 
+            actionLabel="Continue" 
+            disabled={isLoading} 
+            body={bodyContent} 
+            footer={footerContent} 
+            onSubmit={handleSubmit(onSubmit)}
+            modalType="login"
+            reset={reset}/>
     )
 }
 
