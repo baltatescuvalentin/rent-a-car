@@ -20,37 +20,16 @@ import Image from 'next/image';
 interface ReservationCardProps {
     reservation?: SafeReservation | null,
     car: Car,
+    deleteReservation: () => void,
 }
 
-const ReservationCard: React.FC<ReservationCardProps> = ({ reservation, car }) => {
+const ReservationCard: React.FC<ReservationCardProps> = ({ reservation, car, deleteReservation }) => {
 
     const [openDetails, setOpenDetails] = useState(false);
     const router = useRouter();
 
     const handleDetails = () => {
         setOpenDetails(prev => !prev);
-    }
-
-    const deleteReservation = () => {
-
-        axios.post(`/api/car/${car.id}`, {
-            availableCount: car.availableCount + 1
-        })
-            .then(() => {
-
-            })
-            .catch((error: any) => {
-                toast.error('Error updating the car spec!');
-            })
-
-        axios.delete(`/api/reservations/${reservation?.id}`)
-            .then(() => {
-                toast.success('Reservation canceled!');
-                router.refresh();
-            })
-            .catch((error: any) => {
-                toast.error('Error deleting the reservation!');
-            })
     }
 
     return (

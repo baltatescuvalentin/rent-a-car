@@ -4,6 +4,7 @@ import getReservations from "../actions/getReservations";
 import Container from "../components/Container";
 import EmptyState from "../components/EmptyState";
 import ReservationCard from "../components/reservations/ReservationCard";
+import ReservationCardClient from "../components/reservations/ReservationCardClient";
 
 interface IReservationsPage {
     reservationId?: string,
@@ -30,7 +31,7 @@ const ReservationsPage = async ({ params }: { params: IReservationsPage}) => {
                         const currCar = await getCarById({carId: res.carId});
                         if(currCar) {
                             return (
-                                <ReservationCard key={res.id} car={currCar} reservation={res} />
+                                <ReservationCardClient key={res.id} car={currCar} reservation={res} />
                             )
                         }
                     })}
