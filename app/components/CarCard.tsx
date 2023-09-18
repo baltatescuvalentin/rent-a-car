@@ -49,7 +49,8 @@ const CarCard: React.FC<CarCardProps> = ({ data, currentUser }) => {
                 <div className="flex flex-col sm:flex-row justify-center gap-2 ">
                     <div className="flex items-center justify-center">
                         <div className="relative">
-                            <img onClick={() => router.push(`/models/${data?.id}`)} alt={data?.model} src={data?.imgSrc[0]} className="h-[210px] w-[350px] sm:h-[225px] md:w-[330px] hover:cursor-pointer"/>
+                            <Image alt="car model" src={data?.imgSrc[0]} width={0} height={0} sizes="100vw" className="h-[210px] w-[350px] sm:h-[225px] md:w-[330px] hover:cursor-pointer" />
+                            {/*<img onClick={() => router.push(`/models/${data?.id}`)} alt={data?.model} src={data?.imgSrc[0]} className="h-[210px] w-[350px] sm:h-[225px] md:w-[330px] hover:cursor-pointer"/>*/}
                             {data.id !== null && (
                                 <div className="absolute top-3 left-3">
                                     <HeartButton currentUser={currentUser} carId={data.id} />

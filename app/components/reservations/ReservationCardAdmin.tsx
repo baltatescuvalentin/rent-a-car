@@ -17,6 +17,7 @@ import { LuBike } from 'react-icons/lu';
 import { AiFillCalendar } from 'react-icons/ai';
 import { FcWiFiLogo } from "react-icons/fc";
 import ReservationExtra from "./ReservationExtra";
+import Image from 'next/image';
 
 
 interface ReservationCardAdminProps {
@@ -89,7 +90,7 @@ const ReservationCardAdmin: React.FC<ReservationCardAdminProps> = ({ reservation
             <hr />
             {openDetails && (
                 <div className="grid grid-cols-1 lg:grid-cols-5 items-center px-3 gap-3 lg:gap-5">
-                    <img alt="car" src={car.imgSrc[0]} className="h-[200px] w-full xs:w-[80%] sm:h-[250px] sm:w-[375px] justify-self-center lg:col-span-2"/>
+                    <Image alt="car" src={car.imgSrc[0]} className="h-[200px] w-full xs:w-[80%] sm:h-[250px] sm:w-[375px] justify-self-center lg:col-span-2" height={0} width={0} sizes="100vw"/>
                     <div className="flex-row items-center gap-2 flex md:hidden w-[120%]">
                         <AiFillCalendar size={28}/>
                         <div className="flex flex-col lg:flex-row items-center lg:gap-2">

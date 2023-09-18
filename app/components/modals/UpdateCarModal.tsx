@@ -263,7 +263,7 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
                             <div className="flex flex-col lg:flex-row flex-wrap basis-2/6 justify-center gap-3 mt-4">
                                 {carImages.length > 0 && carImages.map((carImg, index) => (
                                     <div key={index} className="relative">
-                                        <img className="rounded-lg w-[350px] h-[200px]" alt="curr img" src={carImg}/>
+                                        <Image className="rounded-lg w-[350px] h-[200px]" alt="curr img" src={carImg} height={0} width={0} sizes="100vw"/>
                                         <FaTimesCircle onClick={() => deleteCarImages(index)} size={24} 
                                             className="absolute z-50 -top-2 -right-2 fill-red-600 hover:cursor-pointer bg-white rounded-full" />
                                     </div>

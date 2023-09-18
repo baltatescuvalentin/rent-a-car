@@ -13,7 +13,7 @@ interface ModelsProps {
     carsDB: Car[],
 }
 
-const Models: React.FC<ModelsProps> = async ({ currentUser, carsDB }) => {
+const Models: React.FC<ModelsProps> = ({ currentUser, carsDB }) => {
 
     if(!carsDB) {
         return <EmptyState />

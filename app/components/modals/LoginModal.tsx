@@ -72,7 +72,7 @@ const LoginModal = () => {
         loginModal.onClose();
         reset();
         registerModal.onOpen();
-    }, [loginModal, registerModal]);
+    }, [loginModal, registerModal, reset]);
 
     let emailForm: FormRegister = {
         requiredMsg: 'Email is required',

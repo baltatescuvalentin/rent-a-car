@@ -195,7 +195,7 @@ const Filters: React.FC<FiltersProps> = ({ types, models, makers, fuels, categor
             window.removeEventListener('beforeunload', handleBeforeReload);
         }
         
-    }, [])
+    }, [router])
 
     useEffect(() => {
         if(window.innerWidth > 1024) {

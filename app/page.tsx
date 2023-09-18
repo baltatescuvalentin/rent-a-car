@@ -62,8 +62,8 @@ export default function Home() {
             </div>
 
             <div className='mt-10 lg:mt-8 w-full relative'>
-              <img alt="car" src='/images/hero-car.png' width={0} height={0} className='w-auto h-auto'/>
-              <img alt="hero-bg" src='/images/hero-bg.png' className='absolute w-auto h-auto -z-10 -top-[50px] ' width={0} height={0} />
+              <Image alt="car" src='/images/hero-car.png' width={0} height={0} sizes='100vw' className='w-auto h-auto'/>
+              <Image alt="hero-bg" src='/images/hero-bg.png' className='absolute w-auto h-auto -z-10 -top-[50px] ' width={0} height={0} sizes='100vw'/>
             </div>
           </div>
         </div>

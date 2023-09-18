@@ -36,7 +36,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, actionLabel, onSubmit, b
         setTimeout(() => {
             onClose();
         }, 300)
-    }, [disabled, onClose])
+    }, [disabled, onClose, reset])
 
     if(!isOpen) {
         return null;
