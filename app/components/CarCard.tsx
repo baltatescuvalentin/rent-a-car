@@ -63,15 +63,7 @@ const CarCard: React.FC<CarCardProps> = ({ data, currentUser }) => {
                         <div className="rounded-md bg-blue-300 text-xl text-center">
                             {data?.price} $/day
                         </div>
-                        <div className="flex flex-row lg:flex-col items-center gap-3">
-                            <Link href={'/models/'+data?.id} className="rounded-md bg-blue-600 text-xl w-full text-center text-white">
-                                Details
-                            </Link>
-                            <button onClick={() => router.push(`/rent/${data?.id}`)} className="rounded-md bg-blue-600 text-xl w-full text-white">
-                                Rent
-                            </button>
-                        </div>
-                        {currentUser?.isAdmin && (
+                        {currentUser?.isAdmin ? (
                             <div className="flex flex-row lg:flex-col items-center gap-3">
                                 <button onClick={() => carEditModal.onOpen(data)} className="rounded-md bg-green-500 text-xl w-full text-white">
                                     Edit
@@ -80,7 +72,16 @@ const CarCard: React.FC<CarCardProps> = ({ data, currentUser }) => {
                                     Delete!
                                 </button>
                             </div>
-                        )}
+                        ) : (
+                            <div className="flex flex-row lg:flex-col items-center gap-3">
+                                <Link href={'/models/'+data?.id} className="rounded-md bg-blue-600 text-xl w-full text-center text-white">
+                                    Details
+                                </Link>
+                                <button onClick={() => router.push(`/rent/${data?.id}`)} className="rounded-md bg-blue-600 text-xl w-full text-white">
+                                    Rent
+                                </button>
+                            </div>
+                            )}
                     </div>
                 </div>
             </div>
