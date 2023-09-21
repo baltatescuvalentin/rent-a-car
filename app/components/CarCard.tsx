@@ -51,7 +51,7 @@ const CarCard: React.FC<CarCardProps> = ({ data, currentUser }) => {
                         <div className="relative">
                             <Image onClick={() => router.push(`/rent/${data?.id}`)} alt="car model" src={data?.imgSrc[0]} width={0} height={0} sizes="100vw" className="h-[210px] w-[350px] sm:h-[225px] md:w-[330px] hover:cursor-pointer" />
                             {/*<img onClick={() => router.push(`/models/${data?.id}`)} alt={data?.model} src={data?.imgSrc[0]} className="h-[210px] w-[350px] sm:h-[225px] md:w-[330px] hover:cursor-pointer"/>*/}
-                            {data.id !== null && (
+                            {data.id !== null && !currentUser?.isAdmin && (
                                 <div className="absolute top-3 left-3">
                                     <HeartButton currentUser={currentUser} carId={data.id} />
                                 </div>
@@ -60,11 +60,14 @@ const CarCard: React.FC<CarCardProps> = ({ data, currentUser }) => {
                     </div>
                     <div className="flex flex-col justify-evenly gap-3 w-full sm:w-[40%] lg:w-[170px] ">
                         
-                        <div className="rounded-md bg-blue-300 text-xl text-center">
+                        <div className="rounded-md bg-blue-300 text-xl text-center font-semibold">
                             {data?.price} $/day
                         </div>
                         {currentUser?.isAdmin ? (
                             <div className="flex flex-row lg:flex-col items-center gap-3">
+                                <Link href={'/models/'+data?.id} className="rounded-md bg-blue-500 text-xl w-full text-center text-white">
+                                    Details
+                                </Link>
                                 <button onClick={() => carEditModal.onOpen(data)} className="rounded-md bg-green-500 text-xl w-full text-white">
                                     Edit
                                 </button>
@@ -74,10 +77,10 @@ const CarCard: React.FC<CarCardProps> = ({ data, currentUser }) => {
                             </div>
                         ) : (
                             <div className="flex flex-row lg:flex-col items-center gap-3">
-                                <Link href={'/models/'+data?.id} className="rounded-md bg-blue-600 text-xl w-full text-center text-white">
+                                <Link href={'/models/'+data?.id} className="rounded-md bg-blue-500 text-xl w-full text-center text-white">
                                     Details
                                 </Link>
-                                <button onClick={() => router.push(`/rent/${data?.id}`)} className="rounded-md bg-blue-600 text-xl w-full text-white">
+                                <button onClick={() => router.push(`/rent/${data?.id}`)} className="rounded-md bg-blue-600 text-xl w-full text-white font-bold shadow-md">
                                     Rent
                                 </button>
                             </div>

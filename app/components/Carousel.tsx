@@ -38,9 +38,11 @@ const Carousel: React.FC<CarouselProps> = ({ images, carId, currentUser }) => {
                     <GrLinkNext onClick={nextImage} className="hover:cursor-pointer shadow-sm w-[20px] h-[20px] md:w-[42px] md:h-[42px]" />
                 </button>
             </div>
-            <div className="absolute top-3 left-14">
-                <HeartButton currentUser={currentUser} carId={carId} />
-            </div>
+            {!currentUser?.isAdmin && (
+                <div className="absolute top-3 left-14">
+                    <HeartButton currentUser={currentUser} carId={carId} />
+                </div>
+            )}
         </div>
     )
 }
