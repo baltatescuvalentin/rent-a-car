@@ -32,6 +32,7 @@ const CarRegisterModal = () => {
         formState: {
             errors,
         },
+        reset,
         getValues,
         handleSubmit,
         setValue,
@@ -191,7 +192,7 @@ const CarRegisterModal = () => {
                             <p className='text-xl font-semibold'>
                                 Add a new car
                             </p>
-                            <button onClick={carRegisterModal.onClose} className='absolute hover:opacity-60 left-5'>
+                            <button onClick={() => {carRegisterModal.onClose(); reset();}} className='absolute hover:opacity-60 left-5'>
                                 <FaTimes size={22} />
                             </button>
                         </div>

@@ -46,6 +46,7 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
         formState: {
             errors,
         },
+        reset,
         getValues,
         handleSubmit,
         setValue,
@@ -230,6 +231,7 @@ const UpdateCarModal: React.FC<CarRegisterModalProps> = ({ open }) => {
                             <button onClick={() => {
                                 carEditModal.onClose();
                                 setUploadedImages([]);
+                                reset();
                             }} className='absolute hover:opacity-60 left-5'>
                                 <FaTimes size={22} />
                             </button>

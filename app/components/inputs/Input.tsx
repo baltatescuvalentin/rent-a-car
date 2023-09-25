@@ -30,7 +30,10 @@ const Input: React.FC<InputProps> = ({ label, register, isLoading, errors, id, t
     let formObject: any = {};
     if(type === "number") {
         formObject = {
-            min: minVal,
+            min: {
+                value: minVal,
+                message: 'Value different than 0',
+            },
         }
     }
     else {
@@ -52,9 +55,12 @@ const Input: React.FC<InputProps> = ({ label, register, isLoading, errors, id, t
         if(requiredObject?.validate) {
             formObject.validate = requiredObject.validate;
         }
-        /*formObject = {
-            required: `${label} is required`
-        }*/
+        else {
+            formObject = {
+                required: `${label} is required`,
+            }
+        }
+        
     }
 
     return (
